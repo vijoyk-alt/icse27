@@ -1,0 +1,827 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f5f4eb">
+<meta name="description" content="বিজয় — personal ICSE Class X examination and syllabus dashboard.">
+<title>বিজয় — Examination Dashboard</title>
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f5f4eb;--paper:#fffef9;--ink:#202b22;--muted:#5a6055;
+  --line:#e5e6d9;--olive:#5c6638;--gold:#b5a45a;--deep:#34432e;
+  --soft:#e9ecd9;--shadow:0 16px 42px rgba(47,58,36,.07);
+  --focus:#8a742d;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(circle at 85% 0%,#e9ebd8 0,transparent 28rem),var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+button,input{font:inherit}
+button{touch-action:manipulation}
+button:focus-visible,input:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+[hidden]{display:none!important}
+.wrap{width:min(1120px,calc(100% - 36px));margin:auto;padding:28px 0 64px}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:38px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:11px;font-weight:750;letter-spacing:-.04em;font-size:20px}
+.mark{width:38px;height:38px;border-radius:12px;background:var(--deep);display:grid;place-items:center;color:#f3edcf;font-family:Georgia,serif;font-size:23px}
+.nav-switch,.tabs{display:flex;gap:5px;background:#e9eade;padding:4px;border-radius:99px}
+.nav-switch button,.tabs button{border:0;background:transparent;color:var(--muted);padding:9px 16px;border-radius:99px;font-weight:650;font-size:12px;cursor:pointer}
+.nav-switch button[aria-selected=true]{background:var(--deep);color:#f3edcf;box-shadow:0 2px 8px #26351a1f}
+.eyebrow{text-transform:uppercase;letter-spacing:.16em;font-size:10px;font-weight:750;color:var(--olive)}
+h1{font-family:Georgia,"Times New Roman",serif;font-weight:500;letter-spacing:-.055em;font-size:clamp(38px,7vw,68px);line-height:.98;margin:12px 0 14px}
+.intro{color:var(--muted);max-width:620px;line-height:1.65;font-size:14px}
+.hero{margin-top:28px;background:var(--deep);color:#f7f5e9;border-radius:24px;padding:clamp(24px,5vw,42px);position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.hero:after{content:"";position:absolute;width:260px;height:260px;border:1px solid rgba(220,213,157,.22);border-radius:50%;right:-65px;top:-115px;box-shadow:0 0 0 28px rgba(220,213,157,.04),0 0 0 58px rgba(220,213,157,.035);pointer-events:none}
+.hero-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;position:relative;z-index:1}
+.hero-label{font-size:10px;letter-spacing:.17em;text-transform:uppercase;color:#d7d6ad;font-weight:700}
+.hero-switch{background:rgba(255,255,255,.1);border:1px solid rgba(220,213,157,.25);color:#f3edcf;padding:7px 12px;border-radius:99px;font-size:11px;cursor:pointer}
+.nextname{font-family:Georgia,serif;font-size:clamp(25px,4vw,38px);margin:14px 0 18px;letter-spacing:-.03em;position:relative;z-index:1}
+.timer{display:flex;gap:9px;align-items:baseline;flex-wrap:wrap;position:relative;z-index:1}
+.timer strong{font-size:clamp(34px,6vw,56px);font-weight:600;letter-spacing:-.06em;font-variant-numeric:tabular-nums}
+.timer span{font-size:12px;color:#d8dcc9;margin-right:8px}
+.hero-foot{display:flex;gap:20px;flex-wrap:wrap;margin-top:18px;color:#d6dacb;font-size:12px;position:relative;z-index:1}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+.stat{background:var(--paper);border:1px solid var(--line);border-radius:15px;padding:16px 18px}
+.stat-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.11em;font-weight:700}
+.stat-value{font-family:Georgia,serif;font-size:27px;margin-top:5px;color:var(--deep);font-variant-numeric:tabular-nums}
+.stat-note{font-size:11px;color:var(--muted);margin-top:3px}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:40px 0 18px;flex-wrap:wrap}
+.section-title{font-family:Georgia,serif;font-size:27px;font-weight:500;letter-spacing:-.03em;margin:0}
+.tabs button[aria-selected=true]{background:var(--paper);color:var(--deep);box-shadow:0 2px 8px #26351a12}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:17px;padding:18px 19px;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:104px}
+.card.is-next{border-color:var(--olive);box-shadow:0 6px 20px rgba(52,67,46,.06)}
+.card.is-live{border-color:var(--gold);background:#fcfbf2}
+.card.is-done{opacity:.58;background:transparent}
+.card-main{min-width:0}
+.badges{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.pill{display:inline-block;background:var(--soft);color:var(--olive);padding:4px 8px;border-radius:99px;font-size:9px;font-weight:750;letter-spacing:.08em;text-transform:uppercase}
+.pill-next{background:var(--deep);color:#f3edcf}
+.pill-gap{background:#f0efe4;color:var(--muted);font-weight:650}
+.subject{font-weight:700;font-size:15px;letter-spacing:-.02em}
+.date{font-size:12px;color:var(--muted);margin-top:6px}
+.count{white-space:nowrap;text-align:right;color:var(--deep)}
+.count b{font-size:21px;letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+.count small{display:block;color:var(--muted);font-size:10px;margin-top:2px}
+.duration-panel{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:14px;padding:15px 17px;background:rgba(255,254,249,.68);border:1px solid var(--line);border-radius:15px}
+.duration-copy strong{display:block;font-size:12px;color:var(--deep)}
+.duration-copy span{display:block;font-size:11px;color:var(--muted);margin-top:3px}
+.duration-fields{display:flex;gap:12px;flex-wrap:wrap}
+.duration-field{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--muted)}
+.duration-field input{width:76px;border:1px solid var(--line);border-radius:8px;background:var(--paper);padding:7px 8px;color:var(--ink)}
+.tools-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:24px 0 12px}
+.tools-actions{display:flex;gap:8px;flex-wrap:wrap}
+.action-btn{border:1px solid var(--line);background:var(--paper);color:var(--deep);padding:9px 12px;border-radius:10px;font-size:11px;font-weight:700;cursor:pointer}
+.action-btn:hover{border-color:var(--olive);background:var(--soft)}
+.action-btn.danger{color:#8a3d32}
+.status-note{font-size:11px;color:var(--muted);min-height:1.4em}
+.tracker-summary{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0 6px}
+.summary-chip{border:1px solid var(--line);background:var(--paper);padding:9px 12px;border-radius:11px;font-size:12px;color:var(--muted)}
+.summary-chip strong{color:var(--deep);font-variant-numeric:tabular-nums}
+.filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin:24px 0}
+.filter-btn{border:1px solid var(--line);background:var(--paper);color:var(--muted);padding:8px 13px;border-radius:99px;font-size:12px;font-weight:600;cursor:pointer}
+.filter-btn[aria-pressed=true]{background:var(--deep);color:#f3edcf;border-color:var(--deep)}
+.subject-block{background:var(--paper);border:1px solid var(--line);border-radius:18px;margin-bottom:22px;overflow:hidden}
+.subject-head{padding:18px 22px;background:#faf9f0;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.subject-head h3{margin:0;font-family:Georgia,serif;font-size:21px;font-weight:500;letter-spacing:-.02em}
+.sample-box{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:650;color:var(--deep);background:var(--paper);border:1px solid var(--line);padding:5px 9px;border-radius:99px}
+.sample-btn{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-weight:700;cursor:pointer;display:inline-grid;place-items:center;padding:0;line-height:1}
+.sample-btn:hover{background:var(--soft);border-color:var(--olive)}
+.sample-btn:disabled{opacity:.4;cursor:not-allowed}
+.sample-val{min-width:20px;text-align:center;font-variant-numeric:tabular-nums;font-size:13px}
+.table-wrap{overflow-x:auto}
+table.raw-table{width:100%;border-collapse:collapse;font-size:13px}
+.raw-table th{text-align:left;padding:11px 16px;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);border-bottom:1px solid var(--line);background:#fdfcf7}
+.raw-table th.col-check,.raw-table td.col-check{text-align:center;min-width:78px}
+.raw-table td{padding:11px 16px;border-bottom:1px solid var(--line)}
+.raw-table tr:last-child td{border-bottom:0}
+.raw-table tr.group-row td{background:#f3f2e8;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--deep);padding:8px 16px}
+.raw-table input[type=checkbox]{width:18px;height:18px;accent-color:var(--deep);cursor:pointer;margin:0;vertical-align:middle}
+.import-input{display:none}
+@media(max-width:680px){
+  .wrap{width:min(100% - 24px,540px);padding-top:20px}
+  header{margin-bottom:28px}
+  .toolbar{align-items:flex-start;flex-direction:column;margin-top:32px}
+  .grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr}
+  .stat{padding:13px 15px}
+  .stat-value{font-size:24px}
+  .tabs{width:100%}.tabs button{flex:1}
+  .duration-panel{align-items:flex-start}
+  .duration-fields{width:100%}
+  .duration-field{flex:1;justify-content:space-between}
+  .duration-field input{width:82px}
+  .subject-head{padding:15px}
+  .subject-head h3{font-size:19px}
+  .tools-actions{width:100%}
+  .action-btn{flex:1}
+  .raw-table th.col-check,.raw-table td.col-check{min-width:58px;padding:10px 8px}
+  .raw-table td:first-child{min-width:180px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="brand"><div class="mark" aria-hidden="true">ব</div><span>বিজয়</span></div>
+  <nav class="nav-switch" role="tablist" aria-label="Main sections">
+    <button type="button" id="viewScheduleBtn" role="tab" aria-selected="true" aria-controls="scheduleWindow">Dashboard</button>
+    <button type="button" id="viewTrackerBtn" role="tab" aria-selected="false" aria-controls="trackerWindow">Syllabus Tracker</button>
+  </nav>
+</header>
+
+<main id="scheduleWindow">
+  <div class="eyebrow">Class X · Examination command centre</div>
+  <h1>One paper<br>at a time.</h1>
+  <p class="intro">A clear view of the examinations ahead, the time available, and the work still to be done.</p>
+
+  <section class="hero" aria-live="off">
+    <div class="hero-top">
+      <div class="hero-label" id="heroLabel">Next examination</div>
+      <button type="button" class="hero-switch" id="heroSwitch" hidden></button>
+    </div>
+    <div class="nextname" id="nextName">Loading your next paper…</div>
+    <div class="timer" id="heroTimer"></div>
+    <div class="hero-foot">
+      <span id="nextDate"></span>
+      <span id="nextType"></span>
+    </div>
+  </section>
+
+  <section class="stats" aria-label="Examination overview">
+    <div class="stat"><div class="stat-label">Pre-Boards</div><div class="stat-value" id="preStat">—</div><div class="stat-note">Scheduled papers</div></div>
+    <div class="stat"><div class="stat-label">ICSE Boards</div><div class="stat-value" id="boardStat">—</div><div class="stat-note">Scheduled papers</div></div>
+    <div class="stat"><div class="stat-label">Sample papers logged</div><div class="stat-value" id="sampleStat">0</div><div class="stat-note">Across all subjects</div></div>
+  </section>
+
+  <div class="toolbar">
+    <h2 class="section-title" id="listTitle">Pre-Board schedule</h2>
+    <div class="tabs" role="tablist" aria-label="Exam schedule">
+      <button id="preTab" type="button" role="tab" aria-selected="true" aria-controls="examGrid" tabindex="0">Pre-Boards</button>
+      <button id="boardTab" type="button" role="tab" aria-selected="false" aria-controls="examGrid" tabindex="-1">ICSE Boards</button>
+    </div>
+  </div>
+  <div class="grid" id="examGrid" role="tabpanel" aria-labelledby="preTab"></div>
+
+  <section class="duration-panel" aria-label="Examination duration settings">
+    <div class="duration-copy"><strong>Examination duration</strong><span>Used to determine when a paper is marked as completed. Change these defaults to match your timetable.</span></div>
+    <div class="duration-fields">
+      <label class="duration-field" for="preDuration">Pre-Boards <input id="preDuration" type="number" min="1" max="600" step="5" inputmode="numeric"> min</label>
+      <label class="duration-field" for="boardDuration">ICSE Boards <input id="boardDuration" type="number" min="1" max="600" step="5" inputmode="numeric"> min</label>
+    </div>
+  </section>
+</main>
+
+<section id="trackerWindow" hidden>
+  <div class="eyebrow">Syllabus & sample-paper record</div>
+  <h1 style="font-size:clamp(32px,5vw,52px)">Subject Tracker</h1>
+  <p class="intro">Track preparation by textbook column and keep a running record of sample papers completed.</p>
+  <div class="tracker-summary" aria-live="polite">
+    <div class="summary-chip">Overall sample papers: <strong id="overallSamples">0</strong></div>
+    <div class="summary-chip">Subjects tracked: <strong>10</strong></div>
+  </div>
+  <div class="filter-bar" id="subjectFilters" aria-label="Filter syllabus by subject"></div>
+  <div id="trackerContainer"></div>
+</section>
+
+<section class="tools-row" aria-label="Progress backup and reset">
+  <div class="tools-actions">
+    <button type="button" class="action-btn" id="exportBtn">Export progress</button>
+    <button type="button" class="action-btn" id="importBtn">Import backup</button>
+    <button type="button" class="action-btn danger" id="resetBtn">Reset progress</button>
+    <input class="import-input" id="importFile" type="file" accept="application/json,.json">
+  </div>
+  <div class="status-note" id="storageStatus" role="status" aria-live="polite"></div>
+</section>
+</div>
+
+<script>
+const schedules = {
+  pre: [
+    ["English Language","2026-12-08T10:00:00+05:30"],
+    ["English Literature","2026-12-09T10:00:00+05:30"],
+    ["Bengali","2026-12-10T10:00:00+05:30"],
+    ["Mathematics","2026-12-11T10:00:00+05:30"],
+    ["History & Civics","2026-12-12T10:00:00+05:30"],
+    ["Geography","2026-12-13T10:00:00+05:30"],
+    ["Physics","2026-12-15T10:00:00+05:30"],
+    ["Computer Applications","2026-12-16T10:00:00+05:30"],
+    ["Chemistry","2026-12-17T10:00:00+05:30"],
+    ["Biology","2026-12-18T10:00:00+05:30"]
+  ],
+  board: [
+    ["English Language","2027-02-15T10:15:00+05:30"],
+    ["English Literature","2027-02-18T10:15:00+05:30"],
+    ["Mathematics","2027-02-22T10:15:00+05:30"],
+    ["History & Civics","2027-02-26T10:15:00+05:30"],
+    ["Geography","2027-03-01T10:15:00+05:30"],
+    ["Physics","2027-03-08T10:15:00+05:30"],
+    ["Chemistry","2027-03-12T10:15:00+05:30"],
+    ["Biology","2027-03-15T10:15:00+05:30"],
+    ["Computer Applications","2027-03-17T10:15:00+05:30"],
+    ["Bengali","2027-03-19T10:15:00+05:30"]
+  ]
+};
+
+const SYLLABUS = [
+  {
+    id: "eng-lang",
+    title: "1. English Language",
+    sampleLabel: "Sample Papers",
+    chapterLabel: "Chapter",
+    columns: ["Concept", "Practice", "PYQ"],
+    rows: [
+      "Composition",
+      "Letter Writing",
+      "Notice and Email Writing",
+      "Comprehension",
+      "Grammar",
+      "Transformation of Sentences"
+    ]
+  },
+  {
+    id: "eng-lit",
+    title: "2. English Literature",
+    sampleLabel: "Sample Papers",
+    chapterLabel: "Chapter",
+    columns: ["Explanation", "PYQ"],
+    rows: [
+      { group: "Drama — Julius Caesar" },
+      "Act III",
+      "Act IV",
+      "Act V",
+      { group: "Treasure Chest — Prose" },
+      "With the Photographer",
+      "The Elevator",
+      "The Girl Who Can",
+      "The Pedestrian",
+      "The Last Lesson",
+      { group: "Treasure Chest — Poetry" },
+      "Haunted Houses",
+      "The Glove and the Lions",
+      "When Great Trees Fall",
+      "A Considerable Speck",
+      "The Power of Music"
+    ]
+  },
+  {
+    id: "bengali",
+    title: "3. বাংলা (Bengali)",
+    sampleLabel: "নমুনা প্রশ্নপত্র",
+    chapterLabel: "অধ্যায়",
+    columns: ["ব্যাখ্যা", "PYQ"],
+    rows: [
+      { group: "বাংলা ভাষা" },
+      "ব্যাকরণ",
+      { group: "বাংলা সাহিত্য — (I) ছোটগল্প" },
+      "১. বামা - বিভূতিভূষণ বন্দ্যোপাধ্যায়",
+      "২. নাম - নরেন্দ্রনাথ মিত্র",
+      "৩. অসহযোগী - মানিক বন্দ্যোপাধ্যায়",
+      "৪. গন্ধটা খুব সন্দেহজনক - শীর্ষেন্দু মুখোপাধ্যায়",
+      "৫. লোকটি - হুমায়ূন আহমেদ",
+      { group: "বাংলা সাহিত্য — (II) কবিতা" },
+      "১. বঙ্গভূমির প্রতি – মাইকেল মধুসূদন দত্ত",
+      "২. কুলি-মজুর – কাজী নজরুল ইসলাম",
+      "৩. আবার আসিব ফিরে - জীবনানন্দ দাশ",
+      "৪. অমলকান্তি - নীরেন্দ্রনাথ চক্রবর্তী",
+      "৫. খো-খো - অমিতাভ দাশগুপ্ত"
+    ]
+  },
+  {
+    id: "maths",
+    title: "4. Mathematics",
+    sampleLabel: "Sample Papers",
+    chapterLabel: "Chapter",
+    columns: ["Concept", "ML Aggarwal", "PYQ"],
+    rows: [
+      "Goods and Services Tax (GST)",
+      "Banking",
+      "Shares and Dividends",
+      "Linear Inequations",
+      "Quadratic Equations",
+      "Ratio and Proportion",
+      "Factorisation of Polynomials",
+      "Matrices",
+      "Arithmetic Progression (AP)",
+      "Geometric Progression (GP)",
+      "Reflection",
+      "Section Formula",
+      "Equation of a Straight Line",
+      "Similarity",
+      "Loci",
+      "Circles",
+      "Constructions",
+      "Mensuration",
+      "Trigonometric Identities",
+      "Trigonometrical Tables",
+      "Heights and Distances",
+      "Measures of Central Tendency",
+      "Probability"
+    ]
+  },
+  {
+    id: "comp",
+    title: "5. Computer Applications",
+    sampleLabel: "Sample Papers",
+    chapterLabel: "Chapter",
+    columns: ["Concept", "APC", "PYQ"],
+    rows: [
+      "Class IX Revision",
+      "Objects and Classes",
+      "User-defined Methods",
+      "Constructors",
+      "Library and Wrapper Classes",
+      "Encapsulation",
+      "Arrays",
+      "String Handling"
+    ]
+  },
+  {
+    id: "physics",
+    title: "6. Physics",
+    sampleLabel: "Sample Papers",
+    chapterLabel: "Chapter",
+    columns: ["Concept", "Selina", "PYQ"],
+    rows: [
+      "Force",
+      "Work, Power and Energy",
+      "Machines",
+      "Refraction of Light at Plane Surfaces",
+      "Refraction of Light through a Lens",
+      "Spectrum",
+      "Sound",
+      "Current Electricity",
+      "Household Circuits",
+      "Electro-Magnetism",
+      "Calorimetry",
+      "Radioactivity"
+    ]
+  },
+  {
+    id: "chemistry",
+    title: "7. Chemistry",
+    sampleLabel: "Sample Papers",
+    chapterLabel: "Chapter",
+    columns: ["Concept", "Selina", "PYQ"],
+    rows: [
+      "Periodic Properties",
+      "Chemical Bonding",
+      "Acids, Bases and Salts",
+      "Analytical Chemistry",
+      "Mole Concept and Stoichiometry",
+      "Electrolysis",
+      "Metallurgy",
+      { group: "Study of Compounds" },
+      "Hydrogen Chloride",
+      "Ammonia",
+      "Nitric Acid",
+      "Sulphuric Acid",
+      { group: "Organic" },
+      "Organic Chemistry"
+    ]
+  },
+  {
+    id: "biology",
+    title: "8. Biology",
+    sampleLabel: "Sample Papers",
+    chapterLabel: "Chapter",
+    columns: ["Concept", "Selina", "PYQ"],
+    rows: [
+      { group: "1. Basic Biology" },
+      "Study of chromosomes, cell cycle and division",
+      "Genetics",
+      { group: "2. Plant Physiology" },
+      "Absorption by Roots",
+      "Transpiration",
+      "Photosynthesis",
+      "Chemical Coordination in Plants",
+      { group: "3. Human Anatomy and Physiology" },
+      "Circulatory System",
+      "Excretory System",
+      "Nervous System",
+      "Sense Organs",
+      "Endocrine System",
+      "Reproductive System",
+      { group: "4. Human Evolution" },
+      "Human Evolution",
+      { group: "5. Population" },
+      "Population",
+      { group: "6. Pollution" },
+      "Pollution"
+    ]
+  },
+  {
+    id: "history",
+    title: "9. History & Civics",
+    sampleLabel: "Sample Papers",
+    chapterLabel: "Chapter",
+    columns: ["Notes", "Total", "PYQ"],
+    rows: [
+      { group: "History — 1. The Indian National Movement (1857–1917)" },
+      "The First War of Independence, 1857",
+      "Growth of Nationalism",
+      "First Phase of the Indian National Movement (1885–1907)",
+      "Second Phase of the Indian National Movement (1905–1916)",
+      "The Muslim League",
+      { group: "History — 2. Mass Phase of the National Movement (1915–1947)" },
+      "Mahatma Gandhi and the National Movement",
+      "Quit India Movement",
+      "Forward Bloc and Indian National Army (INA)",
+      "Independence and Partition of India",
+      { group: "History — 3. The Contemporary World" },
+      "The First World War",
+      "Rise of Dictatorships",
+      "The Second World War",
+      "United Nations",
+      "Major Agencies of the UN",
+      "Non-Aligned Movement (NAM)",
+      { group: "Civics" },
+      "The Union Legislature",
+      "The Union Executive",
+      "The Union Judiciary"
+    ]
+  },
+  {
+    id: "geography",
+    title: "10. Geography",
+    sampleLabel: "Sample Papers",
+    chapterLabel: "Chapter",
+    columns: ["Concept", "Total", "PYQ"],
+    rows: [
+      "Interpretation of Topographical Maps",
+      "Map of India",
+      "Climate",
+      "Soil Resources",
+      "Natural Vegetation",
+      "Water Resources",
+      "Mineral and Energy Resources",
+      "Agriculture",
+      "Manufacturing Industries",
+      "Transport",
+      "Waste Management"
+    ]
+  }
+];
+
+const STORAGE_KEY = "exam_atlas_raw_tracker_v1";
+const BACKUP_VERSION = 1;
+const DEFAULT_DURATIONS = { pre: 180, board: 180 };
+let active = "pre";
+let selectedSubjectFilter = "all";
+let storageAvailable = true;
+let trackerState = { checks: {}, samples: {}, durations: { ...DEFAULT_DURATIONS } };
+
+function setStatus(message) {
+  const el = document.getElementById("storageStatus");
+  if (el) el.textContent = message;
+}
+function safeLoad() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const saved = JSON.parse(raw);
+    if (!saved || typeof saved !== "object") return;
+    trackerState.checks = saved.checks && typeof saved.checks === "object" ? saved.checks : {};
+    trackerState.samples = saved.samples && typeof saved.samples === "object" ? saved.samples : {};
+    trackerState.durations = { ...DEFAULT_DURATIONS, ...(saved.durations && typeof saved.durations === "object" ? saved.durations : {}) };
+    for (const key of Object.keys(trackerState.samples)) {
+      const n = Number(trackerState.samples[key]);
+      trackerState.samples[key] = Number.isFinite(n) ? Math.max(0, Math.floor(n)) : 0;
+    }
+    for (const type of ["pre","board"]) {
+      const n = Number(trackerState.durations[type]);
+      trackerState.durations[type] = Number.isFinite(n) ? Math.min(600, Math.max(1, Math.floor(n))) : DEFAULT_DURATIONS[type];
+    }
+  } catch (error) {
+    storageAvailable = false;
+    setStatus("Browser storage is unavailable. Changes will remain only until this page is closed.");
+  }
+}
+function saveTracker() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(trackerState));
+    storageAvailable = true;
+    setStatus("Progress saved on this device.");
+    return true;
+  } catch (error) {
+    storageAvailable = false;
+    setStatus("Could not save to browser storage. Export a backup to keep your changes.");
+    return false;
+  }
+}
+const fmt = d => new Intl.DateTimeFormat("en-IN", {
+  day:"numeric",month:"short",year:"numeric",hour:"numeric",minute:"2-digit",
+  timeZone:"Asia/Kolkata",timeZoneName:"short"
+}).format(d);
+const fmtDate = d => new Intl.DateTimeFormat("en-IN", {
+  day:"numeric",month:"short",year:"numeric",timeZone:"Asia/Kolkata"
+}).format(d);
+function durationMs(type) {
+  return (Number(trackerState.durations[type]) || DEFAULT_DURATIONS[type]) * 60000;
+}
+function getStatus(date, type, now = Date.now()) {
+  const ms = date.getTime() - now;
+  const duration = durationMs(type);
+  if (ms <= 0 && ms > -duration) return { state:"live", remaining:duration + ms };
+  if (ms <= -duration) return { state:"done" };
+  const totalSeconds = Math.floor(ms / 1000);
+  return {
+    state:"upcoming",
+    days:Math.floor(totalSeconds / 86400),
+    hours:Math.floor((totalSeconds % 86400) / 3600),
+    minutes:Math.floor((totalSeconds % 3600) / 60),
+    seconds:totalSeconds % 60
+  };
+}
+function getAllExams(now = Date.now()) {
+  return ["pre","board"].flatMap(type =>
+    schedules[type].map(([name, iso], index) => {
+      const date = new Date(iso);
+      return { name, date, type, index, status:getStatus(date,type,now) };
+    })
+  ).sort((a,b) => a.date - b.date);
+}
+function getStudyGapText(currDate, prevDate) {
+  if (!prevDate) return "First paper";
+  const d1 = Date.UTC(currDate.getUTCFullYear(),currDate.getUTCMonth(),currDate.getUTCDate());
+  const d0 = Date.UTC(prevDate.getUTCFullYear(),prevDate.getUTCMonth(),prevDate.getUTCDate());
+  const diffDays = Math.round((d1-d0)/86400000)-1;
+  if (diffDays <= 0) return "Back-to-back";
+  return `${diffDays}d study gap`;
+}
+function renderHero() {
+  const exams = getAllExams();
+  const heroExam = exams.find(x => x.status.state === "live" || x.status.state === "upcoming");
+  const heroLabel = document.getElementById("heroLabel");
+  const heroSwitch = document.getElementById("heroSwitch");
+  const heroTimer = document.getElementById("heroTimer");
+  if (heroExam) {
+    const st = heroExam.status;
+    const labelType = heroExam.type === "pre" ? "Pre-Board" : "ICSE Board";
+    heroLabel.textContent = st.state === "live" ? `In Progress · ${labelType}` : `Next ${labelType} examination`;
+    document.getElementById("nextName").textContent = heroExam.name;
+    document.getElementById("nextDate").textContent = fmt(heroExam.date);
+    document.getElementById("nextType").textContent = `${labelType} · ${heroExam.type === "pre" ? "10:00 AM" : "10:15 AM"} IST`;
+    if (st.state === "live") {
+      const left = Math.max(0,st.remaining);
+      const h = Math.floor(left/3600000), m = Math.floor((left%3600000)/60000);
+      heroTimer.innerHTML = `<strong>In progress</strong><span>${String(h).padStart(2,"0")}h ${String(m).padStart(2,"0")}m remaining</span>`;
+    } else {
+      heroTimer.innerHTML = `<strong>${st.days}</strong><span>days</span><strong>${String(st.hours).padStart(2,"0")}</strong><span>hours</span><strong>${String(st.minutes).padStart(2,"0")}</strong><span>min</span><strong>${String(st.seconds).padStart(2,"0")}</strong><span>sec</span>`;
+    }
+    const otherName = heroExam.type === "pre" ? "ICSE Boards" : "Pre-Boards";
+    heroSwitch.hidden = false;
+    heroSwitch.textContent = `View ${otherName} schedule`;
+    heroSwitch.onclick = () => setTab(heroExam.type === "pre" ? "board" : "pre");
+  } else {
+    heroLabel.textContent = "Schedule complete";
+    document.getElementById("nextName").textContent = "All scheduled papers are complete";
+    heroTimer.innerHTML = `<strong>—</strong><span>no upcoming examinations</span>`;
+    document.getElementById("nextDate").textContent = "";
+    document.getElementById("nextType").textContent = "";
+    heroSwitch.hidden = true;
+  }
+}
+function renderSchedule() {
+  renderHero();
+  document.getElementById("preStat").textContent = `${schedules.pre.length} papers`;
+  document.getElementById("boardStat").textContent = `${schedules.board.length} papers`;
+  document.getElementById("sampleStat").textContent = String(totalSamples());
+  const items = schedules[active];
+  document.getElementById("listTitle").textContent = active === "pre" ? "Pre-Board schedule" : "ICSE Board schedule";
+  let markedNext = false;
+  const now = Date.now();
+  document.getElementById("examGrid").innerHTML = items.map(([name,iso],idx) => {
+    const d = new Date(iso);
+    const prevDate = idx > 0 ? new Date(items[idx-1][1]) : null;
+    const gapText = getStudyGapText(d,prevDate);
+    const st = getStatus(d,active,now);
+    const isNext = !markedNext && (st.state === "upcoming" || st.state === "live");
+    if (isNext) markedNext = true;
+    const cardClass = st.state === "done" ? "card is-done" : st.state === "live" ? "card is-live" : isNext ? "card is-next" : "card";
+    let countHTML = "";
+    if (st.state === "done") countHTML = `<b>Completed</b><small>exam window ended</small>`;
+    else if (st.state === "live") countHTML = `<b>Live now</b><small>in progress</small>`;
+    else if (st.days === 0) countHTML = `<b>${st.hours}h ${st.minutes}m</b><small>remaining today</small>`;
+    else countHTML = `<b>${st.days}d ${st.hours}h</b><small>remaining</small>`;
+    const label = active === "pre" ? "Pre-Board" : "ICSE Board";
+    return `<article class="${cardClass}">
+      <div class="card-main">
+        <div class="badges"><span class="pill ${isNext ? "pill-next" : ""}">${isNext ? "Up Next" : label}</span><span class="pill pill-gap">${gapText}</span></div>
+        <div class="subject">${name}</div>
+        <div class="date">${fmtDate(d)} · ${active === "board" ? "10:15 AM" : "10:00 AM"} IST</div>
+      </div>
+      <div class="count">${countHTML}</div>
+    </article>`;
+  }).join("");
+}
+function totalSamples() {
+  return SYLLABUS.reduce((sum,subj) => sum + Math.max(0,Number(trackerState.samples[subj.id]) || 0),0);
+}
+function renderTracker() {
+  const filtersEl = document.getElementById("subjectFilters");
+  filtersEl.innerHTML = [
+    `<button type="button" class="filter-btn" data-filter="all" aria-pressed="${selectedSubjectFilter === "all"}">All Subjects (10)</button>`,
+    ...SYLLABUS.map(s => `<button type="button" class="filter-btn" data-filter="${s.id}" aria-pressed="${selectedSubjectFilter === s.id}">${s.title.replace(/^\d+\.\s*/,"")}</button>`)
+  ].join("");
+  const visibleSubjects = selectedSubjectFilter === "all" ? SYLLABUS : SYLLABUS.filter(s => s.id === selectedSubjectFilter);
+  document.getElementById("trackerContainer").innerHTML = visibleSubjects.map(subj => {
+    const sampleCount = Math.max(0,Number(trackerState.samples[subj.id]) || 0);
+    const headCols = subj.columns.map(c => `<th scope="col" class="col-check">${c}</th>`).join("");
+    let chapterIndex = 0;
+    const bodyRows = subj.rows.map(row => {
+      if (typeof row === "object" && row.group) return `<tr class="group-row"><td colspan="${subj.columns.length+1}">${row.group}</td></tr>`;
+      const rIdx = chapterIndex++;
+      const checkCells = subj.columns.map((col,cIdx) => {
+        const key = `${subj.id}:${rIdx}:${cIdx}`;
+        const checked = trackerState.checks[key] ? "checked" : "";
+        return `<td class="col-check"><input type="checkbox" data-check="${key}" aria-label="${escapeAttr(row)} — ${escapeAttr(col)}" ${checked}></td>`;
+      }).join("");
+      return `<tr><td>${escapeHtml(row)}</td>${checkCells}</tr>`;
+    }).join("");
+    return `<article class="subject-block">
+      <div class="subject-head"><h3>${subj.title}</h3>
+        <div class="sample-box"><span>${subj.sampleLabel}:</span>
+          <button type="button" class="sample-btn" data-sample="${subj.id}" data-delta="-1" aria-label="Decrease ${escapeAttr(subj.title)} sample paper count" ${sampleCount===0?"disabled":""}>−</button>
+          <span class="sample-val" id="sample-${subj.id}" aria-live="polite">${sampleCount}</span>
+          <button type="button" class="sample-btn" data-sample="${subj.id}" data-delta="1" aria-label="Increase ${escapeAttr(subj.title)} sample paper count">+</button>
+        </div>
+      </div>
+      <div class="table-wrap"><table class="raw-table">
+        <thead><tr><th scope="col">${subj.chapterLabel}</th>${headCols}</tr></thead>
+        <tbody>${bodyRows}</tbody>
+      </table></div>
+    </article>`;
+  }).join("");
+  document.getElementById("overallSamples").textContent = String(totalSamples());
+  document.getElementById("sampleStat").textContent = String(totalSamples());
+}
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g,ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+}
+function escapeAttr(value) { return escapeHtml(value); }
+function setTab(which,focusTab=false) {
+  active = which;
+  const preTab = document.getElementById("preTab");
+  const boardTab = document.getElementById("boardTab");
+  const grid = document.getElementById("examGrid");
+  preTab.setAttribute("aria-selected",String(which==="pre"));
+  boardTab.setAttribute("aria-selected",String(which==="board"));
+  preTab.tabIndex = which==="pre" ? 0 : -1;
+  boardTab.tabIndex = which==="board" ? 0 : -1;
+  grid.setAttribute("aria-labelledby",which==="pre" ? "preTab" : "boardTab");
+  if (focusTab) (which==="pre" ? preTab : boardTab).focus();
+  renderSchedule();
+}
+function setWindow(view) {
+  const isTracker = view==="tracker";
+  document.getElementById("scheduleWindow").hidden = isTracker;
+  document.getElementById("trackerWindow").hidden = !isTracker;
+  document.getElementById("viewScheduleBtn").setAttribute("aria-selected",String(!isTracker));
+  document.getElementById("viewTrackerBtn").setAttribute("aria-selected",String(isTracker));
+  if (isTracker) renderTracker();
+}
+function syncDurationInputs() {
+  document.getElementById("preDuration").value = trackerState.durations.pre;
+  document.getElementById("boardDuration").value = trackerState.durations.board;
+}
+function updateDuration(type,value) {
+  const n = Number(value);
+  if (!Number.isFinite(n) || n < 1 || n > 600) {
+    setStatus("Duration must be between 1 and 600 minutes.");
+    syncDurationInputs();
+    return;
+  }
+  trackerState.durations[type] = Math.floor(n);
+  saveTracker();
+  renderSchedule();
+}
+function exportProgress() {
+  const payload = {
+    app:"বিজয়",
+    backupVersion:BACKUP_VERSION,
+    exportedAt:new Date().toISOString(),
+    trackerState
+  };
+  try {
+    const blob = new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `bijoy-progress-${new Date().toISOString().slice(0,10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    setStatus("Progress backup exported.");
+  } catch (error) {
+    setStatus("Export failed in this browser.");
+  }
+}
+function validateImportedState(data) {
+  const state = data && data.trackerState ? data.trackerState : data;
+  if (!state || typeof state !== "object" || Array.isArray(state)) throw new Error("Invalid backup structure.");
+  const checks = state.checks && typeof state.checks === "object" && !Array.isArray(state.checks) ? state.checks : {};
+  const samples = state.samples && typeof state.samples === "object" && !Array.isArray(state.samples) ? state.samples : {};
+  const durations = state.durations && typeof state.durations === "object" ? state.durations : {};
+  const validChecks = {};
+  for (const [key,value] of Object.entries(checks)) {
+    if (/^[a-z-]+:\d+:\d+$/.test(key) && value === true) validChecks[key] = true;
+  }
+  const validSamples = {};
+  for (const subj of SYLLABUS) {
+    const n = Number(samples[subj.id] || 0);
+    validSamples[subj.id] = Number.isFinite(n) ? Math.max(0,Math.min(100000,Math.floor(n))) : 0;
+  }
+  const validDurations = {};
+  for (const type of ["pre","board"]) {
+    const n = Number(durations[type] ?? DEFAULT_DURATIONS[type]);
+    validDurations[type] = Number.isFinite(n) ? Math.min(600,Math.max(1,Math.floor(n))) : DEFAULT_DURATIONS[type];
+  }
+  return { checks:validChecks,samples:validSamples,durations:validDurations };
+}
+async function importProgress(file) {
+  if (!file) return;
+  try {
+    const text = await file.text();
+    const parsed = JSON.parse(text);
+    const restored = validateImportedState(parsed);
+    if (!confirm("Import this backup? Your current saved tracker progress and duration settings will be replaced.")) return;
+    trackerState = restored;
+    saveTracker();
+    syncDurationInputs();
+    renderTracker();
+    renderSchedule();
+    setStatus("Backup imported successfully.");
+  } catch (error) {
+    setStatus(`Import failed: ${error.message || "invalid file"}`);
+  } finally {
+    document.getElementById("importFile").value = "";
+  }
+}
+function resetProgress() {
+  if (!confirm("Reset all saved syllabus checkboxes and sample-paper counts? This cannot be undone unless you have an exported backup.")) return;
+  trackerState.checks = {};
+  trackerState.samples = {};
+  saveTracker();
+  renderTracker();
+  renderSchedule();
+  setStatus("Syllabus and sample-paper progress has been reset. Exam durations were kept.");
+}
+
+document.getElementById("viewScheduleBtn").addEventListener("click",()=>setWindow("schedule"));
+document.getElementById("viewTrackerBtn").addEventListener("click",()=>setWindow("tracker"));
+document.getElementById("preTab").addEventListener("click",()=>setTab("pre"));
+document.getElementById("boardTab").addEventListener("click",()=>setTab("board"));
+document.querySelector(".tabs").addEventListener("keydown",e=>{
+  if(e.key==="ArrowRight"||e.key==="ArrowLeft"){e.preventDefault();setTab(active==="pre"?"board":"pre",true);}
+});
+document.querySelector(".nav-switch").addEventListener("keydown",e=>{
+  if(e.key==="ArrowRight"||e.key==="ArrowLeft"){
+    e.preventDefault();
+    const next = e.target.id==="viewScheduleBtn" ? "viewTrackerBtn" : "viewScheduleBtn";
+    document.getElementById(next).focus();
+    document.getElementById(next).click();
+  }
+});
+document.getElementById("subjectFilters").addEventListener("click",e=>{
+  const btn=e.target.closest("[data-filter]");
+  if(!btn)return;
+  selectedSubjectFilter=btn.getAttribute("data-filter");
+  renderTracker();
+});
+document.getElementById("trackerContainer").addEventListener("change",e=>{
+  const box=e.target.closest("[data-check]");
+  if(!box)return;
+  const key=box.getAttribute("data-check");
+  if(box.checked)trackerState.checks[key]=true;
+  else delete trackerState.checks[key];
+  saveTracker();
+});
+document.getElementById("trackerContainer").addEventListener("click",e=>{
+  const btn=e.target.closest("[data-sample]");
+  if(!btn)return;
+  const subjId=btn.getAttribute("data-sample");
+  const delta=Number(btn.getAttribute("data-delta"));
+  trackerState.samples[subjId]=Math.max(0,(Number(trackerState.samples[subjId])||0)+delta);
+  saveTracker();
+  renderTracker();
+});
+document.getElementById("preDuration").addEventListener("change",e=>updateDuration("pre",e.target.value));
+document.getElementById("boardDuration").addEventListener("change",e=>updateDuration("board",e.target.value));
+document.getElementById("exportBtn").addEventListener("click",exportProgress);
+document.getElementById("importBtn").addEventListener("click",()=>document.getElementById("importFile").click());
+document.getElementById("importFile").addEventListener("change",e=>importProgress(e.target.files[0]));
+document.getElementById("resetBtn").addEventListener("click",resetProgress);
+
+safeLoad();
+syncDurationInputs();
+renderSchedule();
+renderTracker();
+if (storageAvailable) setStatus("Progress is stored locally on this device.");
+setInterval(renderSchedule,1000);
+</script>
+</body>
+</html>
