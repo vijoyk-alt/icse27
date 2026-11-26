@@ -1,0 +1,3500 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#eaedf6">
+<meta name="description" content="বিজয় — personal ICSE Class X examination and syllabus dashboard.">
+<title>বিজয় — Examination Dashboard</title>
+<style>
+:root{
+  color-scheme:light;
+  --bg:#eaedf6;
+  --paper:#fdfeff;
+  --elevated:#edf0f9;
+  --ink:#171a34;
+  --muted:#5a6055;
+  --line:#d3dcec;
+  --olive:#1f3f7f;
+  --gold:#ce9a41;
+  --deep:#202a51;
+  --soft:#d1ddf4;
+  --pill-gap:#e2e6f2;
+  --shadow:0 16px 42px rgba(23,36,71,.07);
+  --card-hover-shadow:0 10px 26px rgba(23,36,71,.09);
+  --focus:#a46f13;
+  --danger:#8a3d32;
+  --danger-bg:rgba(138,61,50,.08);
+  --danger-border:rgba(138,61,50,.28);
+  --hero-bg:linear-gradient(135deg,#202a51 0%,#172042 100%);
+  --hero-border:rgba(237,202,140,.18);
+  --hero-glow:rgba(237,202,140,.06);
+
+  /* Botanical Green & Warm Gold Brand Pill (Light Mode) */
+  --brand-bg:linear-gradient(135deg,#202a51 0%,#172042 100%);
+  --brand-ink:#f3edcf;
+  --brand-border:rgba(237,202,140,.32);
+  --brand-shadow:0 4px 12px rgba(23,32,66,.16);
+}
+
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0d0e1a;
+  --paper:#131526;
+  --elevated:#181b31;
+  --ink:#e1e8f6;
+  --muted:#8391bb;
+  --line:#222640;
+  --olive:#7196e2;
+  --gold:#f8bb52;
+  --deep:#1b244e;
+  --soft:#1a1f3c;
+  --pill-gap:#1a1d33;
+  --shadow:0 18px 46px rgba(0,0,0,.42);
+  --card-hover-shadow:0 12px 28px rgba(0,0,0,.38);
+  --focus:#f9c263;
+  --danger:#e08679;
+  --danger-bg:rgba(224,134,121,.1);
+  --danger-border:rgba(224,134,121,.3);
+  --hero-bg:linear-gradient(135deg,#151a35 0%,#1a2144 100%);
+  --hero-border:rgba(113,150,226,.22);
+  --hero-glow:rgba(113,150,226,.08);
+
+  /* Botanical Green & Warm Gold Brand Pill (Dark Mode) */
+  --brand-bg:linear-gradient(135deg,#161e42 0%,#101632 100%);
+  --brand-ink:#f9c264;
+  --brand-border:rgba(248,187,82,.3);
+  --brand-shadow:0 4px 14px rgba(0,0,0,.32);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+/* Smooth theme color & surface transitions */
+body,
+.brand-pill,
+.nav-switch,
+.tabs,
+.nav-switch button,
+.tabs button,
+.hero,
+.card,
+.pill,
+.subject-block,
+.subject-head,
+.sample-box,
+.sample-btn,
+.filter-btn,
+.action-btn,
+.theme-card,
+.summary-chip,
+.status-banner,
+.jump-pill,
+.back-top-btn,
+.lock-btn,
+.auth-card,
+.auth-input,
+.raw-table th,
+.raw-table td,
+.raw-table tr.group-row td,
+.sim-bar,
+.sim-chip,
+.sim-datetime{
+  transition:
+    color .18s ease,
+    border-color .18s ease,
+    transform .22s cubic-bezier(.2,.75,.25,1),
+    opacity .18s ease;
+}
+
+body{
+  margin:0;
+  background:radial-gradient(circle at 85% 0%,#d0ddf3 0,transparent 28rem),var(--bg);
+  color:var(--ink);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+:root[data-theme="dark"] body{
+  background:radial-gradient(circle at 85% 0%,#151830 0,transparent 30rem),var(--bg);
+}
+
+body.is-locked{
+  overflow:hidden;
+  height:100vh;
+}
+body.is-locked .wrap{
+  filter:blur(12px) saturate(.8);
+  opacity:.32;
+  pointer-events:none;
+  user-select:none;
+}
+
+button,input{font:inherit}
+button{touch-action:manipulation}
+button:focus-visible,input:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+[hidden]{display:none!important}
+
+/* Keyframe Animations */
+@keyframes fadeSlideUp{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes cardEntrance{
+  from{opacity:0;transform:translateY(12px) scale(.99)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+@keyframes slideInFromRight{
+  from{opacity:0;transform:translateX(30px)}
+  to{opacity:1;transform:translateX(0)}
+}
+@keyframes slideInFromLeft{
+  from{opacity:0;transform:translateX(-30px)}
+  to{opacity:1;transform:translateX(0)}
+}
+@keyframes slowPulse{
+  0%,100%{transform:scale(1) rotate(0deg);opacity:.85}
+  50%{transform:scale(1.06) rotate(8deg);opacity:1}
+}
+@keyframes liveDotPulse{
+  0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(248,187,82,.65)}
+  50%{transform:scale(1.15);box-shadow:0 0 0 6px rgba(248,187,82,0)}
+}
+@keyframes headlineReveal{
+  from{opacity:0;transform:translateY(14px);letter-spacing:-.04em}
+  to{opacity:1;transform:translateY(0);letter-spacing:-.055em}
+}
+@keyframes timetableSpotlight{
+  0%{box-shadow:0 0 0 0 rgba(206,154,65,0);transform:scale(1)}
+  30%{box-shadow:0 0 0 6px rgba(206,154,65,.28);transform:scale(1.008)}
+  100%{box-shadow:0 0 0 0 rgba(206,154,65,0);transform:scale(1)}
+}
+@keyframes starTwinkle{
+  0%,100%{opacity:.55;transform:scale(.85)}
+  50%{opacity:1;transform:scale(1.2)}
+}
+@keyframes shakeHorizontal{
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-8px)}
+  40%{transform:translateX(8px)}
+  60%{transform:translateX(-5px)}
+  80%{transform:translateX(5px)}
+}
+
+.shake-error{
+  animation:shakeHorizontal .38s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+.view-animate{
+  animation:fadeSlideUp .32s cubic-bezier(.22,1,.36,1) both;
+}
+.view-slide-right{
+  animation:slideInFromRight .34s cubic-bezier(.22,1,.36,1) both;
+}
+.view-slide-left{
+  animation:slideInFromLeft .34s cubic-bezier(.22,1,.36,1) both;
+}
+
+.view-stage{
+  touch-action:pan-y;
+  will-change:transform,opacity;
+}
+.view-stage.is-swiping{
+  transition:none!important;
+  user-select:none;
+}
+
+.wrap{
+  width:min(1120px,calc(100% - 36px));
+  margin:auto;
+  padding:28px 0 64px;
+  transition:filter .35s ease,opacity .35s ease;
+}
+header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:38px;
+  flex-wrap:nowrap;
+}
+.brand{
+  display:inline-flex;
+  align-items:center;
+  flex-shrink:0;
+}
+.brand-pill{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:8px 16px;
+  border-radius:12px;
+  background:linear-gradient(135deg,#202a51 0%,#151e40 100%);
+  color:#facd7f;
+  font-family:Georgia,"Noto Serif Bengali",serif;
+  font-weight:700;
+  font-size:19px;
+  line-height:1.1;
+  letter-spacing:-.01em;
+  border:1px solid rgba(237,202,140,.34);
+  box-shadow:0 4px 12px rgba(23,32,66,.16);
+  white-space:nowrap;
+  user-select:none;
+}
+:root[data-theme="dark"] .brand-pill{
+  background:linear-gradient(135deg,#19224c 0%,#131938 100%);
+  color:#facd7f;
+  border-color:rgba(237,202,140,.34);
+  box-shadow:0 4px 14px rgba(0,0,0,.32);
+}
+
+.header-controls{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-width:0;
+}
+
+.lock-btn{
+  border:1px solid var(--line);
+  background:var(--paper);
+  color:var(--deep);
+  padding:8px 13px;
+  border-radius:99px;
+  font-size:12px;
+  font-weight:650;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+:root[data-theme="dark"] .lock-btn{
+  background:var(--elevated);
+  color:var(--ink);
+}
+.lock-btn:hover{
+  border-color:var(--olive);
+  background:var(--soft);
+  transform:translateY(-1px);
+}
+.lock-btn:active{transform:scale(.96)}
+
+/* Sliding Segmented Controls (.nav-switch and .tabs) */
+.nav-switch,.tabs{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:4px;
+  background:#d8e1f0;
+  padding:4px;
+  border-radius:99px;
+  border:1px solid rgba(31,63,127,.12);
+}
+.nav-switch{
+  flex-shrink:1;
+  min-width:0;
+}
+:root[data-theme="dark"] .nav-switch,:root[data-theme="dark"] .tabs{
+  background:var(--elevated);
+  border-color:var(--line);
+}
+
+.nav-glider,.tab-glider{
+  position:absolute;
+  top:4px;
+  bottom:4px;
+  left:0;
+  border-radius:99px;
+  pointer-events:none;
+  z-index:0;
+  will-change:transform,width;
+  transition:
+    transform .32s cubic-bezier(.22,1,.36,1),
+    width .32s cubic-bezier(.22,1,.36,1),
+    background-color .25s ease,
+    box-shadow .25s ease;
+}
+.nav-glider{
+  background:var(--deep);
+  box-shadow:0 2px 8px rgba(23,32,66,.22);
+}
+:root[data-theme="dark"] .nav-glider{
+  background:#1b244e;
+  box-shadow:0 2px 10px rgba(0,0,0,.36);
+}
+
+.tab-glider{
+  background:var(--paper);
+  box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+:root[data-theme="dark"] .tab-glider{
+  background:#1b244e;
+  box-shadow:0 2px 10px rgba(0,0,0,.3);
+}
+
+.nav-switch button,.tabs button{
+  position:relative;
+  z-index:1;
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  padding:8px 15px;
+  border-radius:99px;
+  font-weight:650;
+  font-size:12px;
+  line-height:1.2;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  gap:6px;
+  white-space:nowrap;
+}
+.nav-switch button svg{
+  flex-shrink:0;
+  transition:transform .3s cubic-bezier(.22,1,.36,1);
+}
+.nav-switch button:hover svg{
+  transform:rotate(32deg);
+}
+.nav-switch button:hover,.tabs button:hover{color:var(--ink)}
+.nav-switch button:active,.tabs button:active{transform:scale(.96)}
+
+.nav-switch button[aria-selected=true]{
+  color:#f3edcf;
+}
+:root[data-theme="dark"] .nav-switch button[aria-selected=true]{
+  color:#e1e8f6;
+}
+
+.eyebrow{text-transform:uppercase;letter-spacing:.16em;font-size:10px;font-weight:750;color:var(--olive)}
+h1{
+  font-family:Georgia,"Times New Roman",serif;
+  font-weight:500;
+  letter-spacing:-.055em;
+  font-size:clamp(36px,6.8vw,64px);
+  line-height:1.02;
+  margin:12px 0 0;
+  animation:headlineReveal .45s cubic-bezier(.22,1,.36,1) both;
+}
+
+/* Hero Banner */
+.hero{
+  margin-top:24px;
+  background:var(--hero-bg);
+  color:#e8ecf8;
+  border-radius:24px;
+  padding:clamp(24px,5vw,42px);
+  position:relative;
+  overflow:hidden;
+  box-shadow:var(--shadow);
+  border:1px solid var(--hero-border);
+}
+.hero:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle at 88% 18%,var(--hero-glow) 0%,transparent 55%);
+  pointer-events:none;
+}
+.hero:after{
+  content:"";
+  position:absolute;
+  width:260px;height:260px;
+  border:1px solid rgba(237,202,140,.22);
+  border-radius:50%;
+  right:-65px;top:-115px;
+  box-shadow:0 0 0 28px rgba(237,202,140,.04),0 0 0 58px rgba(237,202,140,.035);
+  pointer-events:none;
+  animation:slowPulse 9s ease-in-out infinite;
+}
+.hero-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;position:relative;z-index:1}
+.hero-label{
+  font-size:10px;letter-spacing:.17em;text-transform:uppercase;color:#d7d6ad;font-weight:700;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.live-dot{
+  width:8px;height:8px;border-radius:50%;background:var(--gold);display:inline-block;
+  animation:liveDotPulse 1.8s ease-in-out infinite;
+}
+.hero-switch{
+  background:rgba(255,255,255,.09);
+  border:1px solid rgba(237,202,140,.28);
+  color:#f3edcf;
+  padding:7px 14px;
+  border-radius:99px;
+  font-size:11px;
+  font-weight:650;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+.hero-switch:hover{background:rgba(255,255,255,.18);transform:translateY(-1px)}
+.hero-switch:active{transform:scale(.96)}
+.nextname{font-family:Georgia,serif;font-size:clamp(25px,4vw,38px);margin:14px 0 18px;letter-spacing:-.03em;position:relative;z-index:1}
+.timer{display:flex;gap:clamp(4px,1.2vw,9px);align-items:baseline;flex-wrap:nowrap;white-space:nowrap;position:relative;z-index:1}
+.timer strong{font-size:clamp(24px,6vw,56px);font-weight:600;letter-spacing:-.06em;font-variant-numeric:tabular-nums}
+.timer span{font-size:clamp(11.5px,2.8vw,12px);color:#c0cce5;margin-right:clamp(3px,1vw,8px)}
+.timer span:last-child{margin-right:0}
+.hero-foot{display:flex;gap:20px;flex-wrap:wrap;margin-top:18px;color:#c3cde2;font-size:12px;position:relative;z-index:1}
+
+/* Non-destructive Date/Time Simulation Strip */
+.sim-bar{
+  margin-top:16px;
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:13px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  box-shadow:0 6px 20px rgba(23,36,71,.04);
+}
+.sim-bar.is-simulating{
+  border-color:var(--gold);
+  background:linear-gradient(135deg,var(--paper) 0%,var(--soft) 100%);
+}
+.sim-head{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:12px;
+  font-weight:650;
+  color:var(--ink);
+  white-space:nowrap;
+}
+.sim-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:4px 10px;
+  border-radius:99px;
+  font-size:10.5px;
+  font-weight:700;
+  background:var(--soft);
+  color:var(--olive);
+  border:1px solid rgba(31,63,127,.2);
+}
+.sim-bar.is-simulating .sim-badge{
+  background:var(--deep);
+  color:#f3edcf;
+  border-color:var(--deep);
+}
+:root[data-theme="dark"] .sim-bar.is-simulating .sim-badge{
+  background:#1e2a5c;
+  color:#e1e8f6;
+}
+.sim-controls{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  flex-wrap:wrap;
+  flex:1 1 auto;
+  justify-content:flex-end;
+}
+.sim-chip{
+  border:1px solid var(--line);
+  background:var(--bg);
+  color:var(--muted);
+  padding:6px 11px;
+  border-radius:99px;
+  font-size:11.5px;
+  font-weight:650;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.sim-chip:hover{
+  color:var(--ink);
+  border-color:var(--olive);
+  background:var(--soft);
+  transform:translateY(-1px);
+}
+.sim-chip:active{transform:scale(.96)}
+.sim-chip[aria-pressed=true]{
+  background:var(--deep);
+  color:#f3edcf;
+  border-color:var(--deep);
+}
+:root[data-theme="dark"] .sim-chip[aria-pressed=true]{
+  background:#1e2a5c;
+  color:#e1e8f6;
+  border-color:#2d3d80;
+}
+.sim-datetime{
+  border:1px solid var(--line);
+  background:var(--bg);
+  color:var(--ink);
+  padding:5px 10px;
+  border-radius:99px;
+  font-size:11.5px;
+  font-weight:600;
+  cursor:pointer;
+  max-width:195px;
+}
+.sim-datetime:hover{border-color:var(--olive)}
+.sim-datetime:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(206,154,65,.22)}
+
+/* Schedule Toolbar, Swipe Gestures & Tabs */
+.timetable-section{
+  scroll-margin-top:24px;
+  border-radius:20px;
+  touch-action:pan-y;
+}
+.timetable-section.is-highlighted{
+  animation:timetableSpotlight 1.1s cubic-bezier(.22,1,.36,1) both;
+}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:34px 0 18px;flex-wrap:wrap}
+.section-title{font-family:Georgia,serif;font-size:27px;font-weight:500;letter-spacing:-.03em;margin:0}
+.tabs button{flex:1 1 0;min-width:118px}
+.tabs button[aria-selected=true]{
+  color:var(--deep);
+}
+:root[data-theme="dark"] .tabs button[aria-selected=true]{
+  color:#e1e8f6;
+}
+
+/* Exam Cards Grid & Swipe Physics */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  will-change:transform,opacity;
+  transition:transform .28s cubic-bezier(.22,1,.36,1),opacity .24s ease;
+}
+.grid.is-dragging{
+  transition:none;
+  user-select:none;
+  cursor:grabbing;
+}
+.grid.slide-from-right{
+  animation:slideInFromRight .32s cubic-bezier(.22,1,.36,1) both;
+}
+.grid.slide-from-left{
+  animation:slideInFromLeft .32s cubic-bezier(.22,1,.36,1) both;
+}
+.card{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:17px;
+  padding:18px 19px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  min-height:104px;
+}
+.card.card-enter{
+  animation:cardEntrance .34s cubic-bezier(.22,1,.36,1) both;
+}
+.card:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--card-hover-shadow);
+  border-color:rgba(31,63,127,.4);
+}
+:root[data-theme="dark"] .card:hover{
+  background:var(--elevated);
+  border-color:rgba(113,150,226,.36);
+}
+.card.is-next{
+  border-color:var(--olive);
+  box-shadow:0 6px 22px rgba(32,42,81,.08);
+}
+:root[data-theme="dark"] .card.is-next{
+  background:#15172c;
+  border-color:var(--olive);
+  box-shadow:0 8px 24px rgba(0,0,0,.32);
+}
+.card.is-live{
+  border-color:var(--gold);
+  background:#f6f8fd;
+}
+:root[data-theme="dark"] .card.is-live{
+  background:#131c2e;
+  border-color:var(--gold);
+}
+.card.is-done{opacity:.56;background:transparent}
+.card.is-done:hover{transform:none;box-shadow:none}
+.card-main{min-width:0}
+.badges{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.pill{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--soft);color:var(--olive);
+  padding:4px 9px;border-radius:99px;font-size:9px;font-weight:750;letter-spacing:.08em;text-transform:uppercase;
+}
+.pill-next{background:var(--deep);color:#f3edcf}
+:root[data-theme="dark"] .pill-next{background:#1e2a5c;color:#e1e8f6}
+.pill-live{background:rgba(206,154,65,.2);color:var(--gold)}
+.pill-gap{background:var(--pill-gap);color:var(--muted);font-weight:650}
+.subject{font-weight:700;font-size:15px;letter-spacing:-.02em}
+.date{font-size:12px;color:var(--muted);margin-top:6px}
+.count{white-space:nowrap;text-align:right;color:var(--deep)}
+:root[data-theme="dark"] .count{color:var(--olive)}
+.count b{font-size:21px;letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+.count small{display:block;color:var(--muted);font-size:10px;margin-top:2px}
+
+/* Buttons & Interactive Controls */
+.tools-actions{display:flex;gap:8px;flex-wrap:wrap}
+.action-btn{
+  border:1px solid var(--line);
+  background:var(--paper);
+  color:var(--deep);
+  padding:9px 14px;
+  border-radius:10px;
+  font-size:12px;
+  font-weight:650;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+}
+:root[data-theme="dark"] .action-btn{
+  background:var(--elevated);
+  color:var(--ink);
+  border-color:var(--line);
+}
+.action-btn:hover{
+  border-color:var(--olive);
+  background:var(--soft);
+  transform:translateY(-1px);
+  box-shadow:0 4px 12px rgba(0,0,0,.06);
+}
+:root[data-theme="dark"] .action-btn:hover{
+  background:#1d2342;
+  border-color:var(--olive);
+}
+.action-btn:active{transform:scale(.96)}
+.action-btn.primary{
+  background:var(--deep);
+  color:#f3edcf;
+  border-color:var(--deep);
+}
+:root[data-theme="dark"] .action-btn.primary{
+  background:#1e2a5c;
+  color:#e1e8f6;
+  border-color:#273677;
+}
+.action-btn.primary:hover{
+  opacity:.94;
+  background:var(--deep);
+}
+:root[data-theme="dark"] .action-btn.primary:hover{
+  background:#23316c;
+}
+.action-btn.danger{
+  color:var(--danger);
+  border-color:var(--danger-border);
+  background:var(--danger-bg);
+}
+.action-btn.danger:hover{
+  background:rgba(138,61,50,.15);
+  border-color:var(--danger);
+}
+:root[data-theme="dark"] .action-btn.danger:hover{
+  background:rgba(224,134,121,.18);
+}
+
+/* Tracker View */
+.tracker-summary{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-start;margin:0 0 16px}
+.summary-chip{border:1px solid var(--line);background:var(--paper);padding:9px 13px;border-radius:11px;font-size:12px;color:var(--muted)}
+.summary-chip strong{color:var(--deep);font-variant-numeric:tabular-nums}
+:root[data-theme="dark"] .summary-chip strong{color:var(--olive)}
+
+.search-bar-wrap{
+  position:relative;
+  margin:18px 0 14px;
+}
+.search-bar-icon{
+  position:absolute;
+  left:15px;
+  top:50%;
+  transform:translateY(-50%);
+  color:var(--muted);
+  pointer-events:none;
+  display:grid;
+  place-items:center;
+}
+.syllabus-search{
+  width:100%;
+  border:1.5px solid var(--line);
+  background:var(--paper);
+  color:var(--ink);
+  border-radius:14px;
+  padding:13px 42px 13px 42px;
+  font-size:13.5px;
+  transition:border-color .2s ease,box-shadow .2s ease,background-color .25s ease;
+}
+.syllabus-search::placeholder{color:var(--muted)}
+.syllabus-search:hover{border-color:rgba(31,63,127,.45)}
+.syllabus-search:focus{
+  outline:none;
+  border-color:var(--olive);
+  box-shadow:0 0 0 3px rgba(31,63,127,.14);
+}
+:root[data-theme="dark"] .syllabus-search{
+  background:var(--elevated);
+}
+:root[data-theme="dark"] .syllabus-search:focus{
+  box-shadow:0 0 0 3px rgba(113,150,226,.16);
+}
+.search-clear-btn{
+  position:absolute;
+  right:10px;
+  top:50%;
+  transform:translateY(-50%);
+  border:0;
+  background:var(--soft);
+  color:var(--ink);
+  width:26px;
+  height:26px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  font-size:14px;
+  line-height:1;
+  cursor:pointer;
+}
+.search-clear-btn:hover{background:var(--olive);color:#fdfeff}
+:root[data-theme="dark"] .search-clear-btn:hover{color:#0d0e1a}
+
+/* Subject Quick-Jump Bar */
+.subject-jump-bar{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  overflow-x:auto;
+  padding:4px 2px 10px;
+  margin-bottom:14px;
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+}
+.subject-jump-bar::-webkit-scrollbar{display:none}
+.jump-pill{
+  flex:0 0 auto;
+  border:1px solid var(--line);
+  background:var(--paper);
+  color:var(--muted);
+  border-radius:99px;
+  padding:7px 13px;
+  font-size:11.5px;
+  font-weight:650;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.jump-pill:hover{
+  color:var(--ink);
+  border-color:var(--olive);
+  background:var(--soft);
+  transform:translateY(-1px);
+}
+.jump-pill:active{transform:scale(.96)}
+
+/* Floating Back to Top Button */
+.back-top-btn{
+  position:fixed;
+  right:20px;
+  bottom:22px;
+  z-index:20;
+  border:1px solid var(--line);
+  background:var(--deep);
+  color:#f3edcf;
+  padding:10px 15px;
+  border-radius:99px;
+  font-size:12px;
+  font-weight:650;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  box-shadow:0 10px 26px rgba(0,0,0,.22);
+}
+.back-top-btn:hover{transform:translateY(-2px);opacity:.96}
+.back-top-btn:active{transform:scale(.95)}
+
+.empty-search{
+  background:var(--paper);
+  border:1px dashed var(--line);
+  border-radius:18px;
+  padding:34px 20px;
+  text-align:center;
+  color:var(--muted);
+  font-size:13.5px;
+  animation:fadeSlideUp .25s ease both;
+}
+
+.subject-block{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:18px;
+  margin-bottom:22px;
+  overflow:hidden;
+  scroll-margin-top:20px;
+}
+.subject-block.is-highlighted{
+  animation:timetableSpotlight 1.05s cubic-bezier(.22,1,.36,1) both;
+}
+.subject-head{
+  padding:18px 22px;background:#f0f3fa;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+}
+:root[data-theme="dark"] .subject-head{background:var(--elevated)}
+.subject-head h3{margin:0;font-family:Georgia,serif;font-size:21px;font-weight:500;letter-spacing:-.02em}
+.sample-box{
+  display:flex;align-items:center;gap:9px;font-size:12px;font-weight:650;
+  color:var(--deep);background:var(--paper);border:1px solid var(--line);padding:5px 9px;border-radius:99px;
+}
+:root[data-theme="dark"] .sample-box{color:var(--ink)}
+.sample-btn{
+  width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:var(--bg);
+  color:var(--ink);font-weight:700;cursor:pointer;display:inline-grid;place-items:center;padding:0;line-height:1;
+}
+.sample-btn:hover:not(:disabled){background:var(--soft);border-color:var(--olive);transform:scale(1.06)}
+.sample-btn:active:not(:disabled){transform:scale(.92)}
+.sample-btn:disabled{opacity:.38;cursor:not-allowed}
+.sample-val{min-width:20px;text-align:center;font-variant-numeric:tabular-nums;font-size:13px}
+.table-wrap{overflow-x:auto}
+table.raw-table{width:100%;border-collapse:collapse;font-size:13px}
+.raw-table th{
+  text-align:left;padding:11px 16px;font-size:10px;text-transform:uppercase;
+  letter-spacing:.1em;color:var(--muted);border-bottom:1px solid var(--line);background:#f9faff;
+}
+:root[data-theme="dark"] .raw-table th{background:#101223}
+.raw-table th.col-check,.raw-table td.col-check{text-align:center;min-width:78px}
+.raw-table td{padding:11px 16px;border-bottom:1px solid var(--line)}
+.raw-table tbody tr:hover td{background:rgba(31,63,127,.04)}
+:root[data-theme="dark"] .raw-table tbody tr:hover td{background:rgba(113,150,226,.05)}
+.raw-table tr:last-child td{border-bottom:0}
+.raw-table tr.group-row td{
+  background:#e7eaf4;font-weight:700;font-size:11px;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--deep);padding:8px 16px;
+}
+:root[data-theme="dark"] .raw-table tr.group-row td{background:#1a1d34;color:var(--olive)}
+.raw-table input[type=checkbox]{
+  width:18px;height:18px;accent-color:var(--deep);cursor:pointer;margin:0;vertical-align:middle;
+  transition:transform .16s cubic-bezier(.34,1.56,.64,1);
+}
+:root[data-theme="dark"] .raw-table input[type=checkbox]{accent-color:var(--olive)}
+.raw-table input[type=checkbox]:active{transform:scale(.85)}
+.raw-table input[type=checkbox]:checked{transform:scale(1.06)}
+
+/* Settings View Redesign */
+.settings-block{padding-bottom:6px}
+.settings-subhead{font-size:12px;color:var(--muted);margin-top:3px}
+.settings-row{
+  display:flex;align-items:center;justify-content:space-between;gap:18px;
+  padding:18px 22px;flex-wrap:wrap;border-bottom:1px solid var(--line);
+}
+.settings-row:last-child{border-bottom:0}
+.settings-row strong{display:block;font-size:13.5px;color:var(--ink);font-weight:650}
+.settings-row span.row-desc{display:block;font-size:12px;color:var(--muted);margin-top:4px;line-height:1.45}
+
+/* Security Form inside Settings */
+.security-form{
+  padding:18px 22px;
+  border-bottom:1px solid var(--line);
+  display:grid;
+  gap:14px;
+}
+.security-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+}
+.field-group{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.field-group label{
+  font-size:11px;
+  font-weight:650;
+  color:var(--muted);
+  letter-spacing:.02em;
+}
+.pwd-field-wrap{
+  position:relative;
+  display:flex;
+  align-items:center;
+}
+.auth-input{
+  width:100%;
+  border:1.5px solid var(--line);
+  background:var(--bg);
+  color:var(--ink);
+  border-radius:11px;
+  padding:10px 38px 10px 13px;
+  font-size:13px;
+}
+.auth-input:hover{border-color:rgba(31,63,127,.45)}
+.auth-input:focus{
+  outline:none;
+  border-color:var(--olive);
+  box-shadow:0 0 0 3px rgba(31,63,127,.14);
+}
+:root[data-theme="dark"] .auth-input{background:var(--elevated)}
+:root[data-theme="dark"] .auth-input:focus{box-shadow:0 0 0 3px rgba(113,150,226,.16)}
+.eye-toggle-btn{
+  position:absolute;
+  right:8px;
+  top:50%;
+  transform:translateY(-50%);
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  width:28px;
+  height:28px;
+  border-radius:8px;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  padding:0;
+}
+.eye-toggle-btn:hover{color:var(--ink);background:var(--soft)}
+
+/* Appearance Theme Cards */
+.theme-cards{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:18px 22px 16px;
+}
+.theme-card{
+  border:1.5px solid var(--line);
+  background:var(--bg);
+  border-radius:14px;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:13px;
+  cursor:pointer;
+  text-align:left;
+  color:var(--ink);
+  position:relative;
+}
+.theme-card:hover{
+  border-color:var(--olive);
+  transform:translateY(-2px);
+  box-shadow:var(--card-hover-shadow);
+}
+.theme-card:active{transform:scale(.98)}
+.theme-card[aria-pressed=true]{
+  border-color:var(--olive);
+  background:var(--soft);
+  box-shadow:0 4px 16px rgba(0,0,0,.06);
+}
+.theme-swatch{
+  width:42px;height:42px;border-radius:11px;display:grid;place-items:center;flex-shrink:0;
+  border:1px solid rgba(0,0,0,.1);
+}
+.theme-swatch.light-swatch{background:#eaedf6;color:#202a51}
+.theme-swatch.dark-swatch{background:#131526;color:#f8bb52;border-color:#222640}
+.theme-card-info strong{display:block;font-size:13.5px;font-weight:700}
+.theme-check{
+  margin-left:auto;width:20px;height:20px;border-radius:50%;
+  border:1.5px solid var(--line);display:grid;place-items:center;font-size:11px;color:transparent;
+}
+.theme-card[aria-pressed=true] .theme-check{
+  background:var(--olive);border-color:var(--olive);color:#fdfeff;
+}
+:root[data-theme="dark"] .theme-card[aria-pressed=true] .theme-check{color:#0d0e1a}
+
+/* Interactive Celestial Day/Night Theme Switcher */
+.celestial-toggle{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  cursor:pointer;
+  user-select:none;
+}
+.celestial-toggle input{
+  position:absolute;
+  opacity:0;
+  width:1px;
+  height:1px;
+}
+.celestial-track{
+  position:relative;
+  width:84px;
+  height:40px;
+  border-radius:99px;
+  background:linear-gradient(135deg,#d4dff4 0%,#baccee 100%);
+  border:1.5px solid rgba(31,63,127,.32);
+  box-shadow:inset 0 2px 6px rgba(23,32,66,.12),0 2px 8px rgba(23,32,66,.06);
+  overflow:hidden;
+  transition:background .42s cubic-bezier(.22,1,.36,1),border-color .38s ease,box-shadow .38s ease,transform .2s ease;
+}
+.celestial-toggle:hover .celestial-track{
+  border-color:var(--olive);
+  transform:scale(1.04);
+  box-shadow:inset 0 2px 6px rgba(23,32,66,.12),0 4px 14px rgba(31,63,127,.2);
+}
+.celestial-toggle:active .celestial-track{
+  transform:scale(.95);
+}
+.celestial-toggle input:focus-visible + .celestial-track{
+  outline:3px solid var(--focus);
+  outline-offset:3px;
+}
+.celestial-toggle input:checked + .celestial-track{
+  background:linear-gradient(135deg,#0e1127 0%,#181e3e 100%);
+  border-color:rgba(248,187,82,.45);
+  box-shadow:inset 0 2px 8px rgba(0,0,0,.55),0 4px 14px rgba(0,0,0,.32);
+}
+
+/* Decorative Stars & Clouds inside celestial track */
+.celestial-stars{
+  position:absolute;
+  left:11px;
+  top:50%;
+  transform:translateY(-50%) scale(.45);
+  opacity:0;
+  color:#f9c264;
+  display:flex;
+  align-items:center;
+  gap:3px;
+  pointer-events:none;
+  transition:opacity .35s ease,transform .42s cubic-bezier(.34,1.56,.64,1);
+}
+.celestial-toggle input:checked + .celestial-track .celestial-stars{
+  opacity:1;
+  transform:translateY(-50%) scale(1);
+}
+.celestial-toggle input:checked + .celestial-track .star-1{
+  animation:starTwinkle 2.4s ease-in-out infinite;
+}
+.celestial-toggle input:checked + .celestial-track .star-2{
+  animation:starTwinkle 2.4s ease-in-out .6s infinite;
+}
+.celestial-toggle input:checked + .celestial-track .star-3{
+  animation:starTwinkle 2.4s ease-in-out 1.2s infinite;
+}
+.celestial-clouds{
+  position:absolute;
+  right:11px;
+  top:50%;
+  transform:translateY(-50%) scale(1);
+  opacity:.72;
+  color:#1f3f7f;
+  display:flex;
+  align-items:center;
+  pointer-events:none;
+  transition:opacity .3s ease,transform .38s ease;
+}
+.celestial-toggle input:checked + .celestial-track .celestial-clouds{
+  opacity:0;
+  transform:translateY(-50%) translateX(8px) scale(.5);
+}
+
+/* Sliding & Morphing Celestial Orb */
+.celestial-thumb{
+  position:absolute;
+  top:3px;
+  left:3px;
+  width:31px;
+  height:31px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#202a51 0%,#1f3876 100%);
+  color:#f5eec9;
+  display:grid;
+  place-items:center;
+  box-shadow:0 3px 10px rgba(23,32,66,.32),0 0 0 2px rgba(245,238,201,.18);
+  transition:transform .46s cubic-bezier(.34,1.56,.64,1),background .38s ease,color .38s ease,box-shadow .38s ease;
+}
+.celestial-toggle input:checked + .celestial-track .celestial-thumb{
+  transform:translateX(44px) rotate(360deg);
+  background:linear-gradient(135deg,#f8c05e 0%,#ce9a41 100%);
+  color:#101329;
+  box-shadow:0 0 16px rgba(248,192,94,.55),0 2px 8px rgba(0,0,0,.4);
+}
+.celestial-thumb .icon-sun,
+.celestial-thumb .icon-moon{
+  position:absolute;
+  transition:opacity .28s ease,transform .4s cubic-bezier(.22,1,.36,1);
+}
+.celestial-thumb .icon-sun{
+  opacity:1;
+  transform:scale(1) rotate(0deg);
+}
+.celestial-thumb .icon-moon{
+  opacity:0;
+  transform:scale(.35) rotate(-90deg);
+}
+.celestial-toggle input:checked + .celestial-track .icon-sun{
+  opacity:0;
+  transform:scale(.35) rotate(90deg);
+}
+.celestial-toggle input:checked + .celestial-track .icon-moon{
+  opacity:1;
+  transform:scale(1) rotate(0deg);
+}
+
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* Data Summary & Status Banner */
+.data-overview{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:16px 22px;border-bottom:1px solid var(--line);background:var(--bg);
+}
+.data-pill{
+  font-size:11.5px;color:var(--muted);background:var(--paper);
+  border:1px solid var(--line);padding:6px 11px;border-radius:99px;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.data-pill strong{color:var(--ink);font-variant-numeric:tabular-nums}
+.storage-dot{width:7px;height:7px;border-radius:50%;background:#4b8b52;display:inline-block}
+.storage-dot.is-warn{background:#eb990a}
+
+.status-banner{
+  margin:14px 22px 16px;
+  padding:11px 14px;
+  border-radius:11px;
+  font-size:12px;
+  background:var(--soft);
+  color:var(--ink);
+  border:1px solid rgba(31,63,127,.25);
+  display:flex;
+  align-items:center;
+  gap:8px;
+  animation:fadeSlideUp .25s ease both;
+}
+.status-banner.is-error{
+  background:var(--danger-bg);
+  color:var(--danger);
+  border-color:var(--danger-border);
+}
+.status-banner:empty{display:none}
+.import-input{display:none}
+
+/* Full-Viewport Password Lock & Initial Setup Overlay */
+.auth-overlay{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(234,237,246,.74);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  overflow-y:auto;
+}
+:root[data-theme="dark"] .auth-overlay{
+  background:rgba(13,14,26,.78);
+}
+
+.auth-card{
+  width:min(440px,100%);
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:30px 28px 26px;
+  box-shadow:0 24px 64px rgba(23,26,52,.18);
+  position:relative;
+  overflow:hidden;
+  animation:cardEntrance .38s cubic-bezier(.22,1,.36,1) both;
+}
+:root[data-theme="dark"] .auth-card{
+  box-shadow:0 28px 72px rgba(0,0,0,.62);
+}
+.auth-card:before{
+  content:"";
+  position:absolute;
+  top:0;left:0;right:0;
+  height:4px;
+  background:linear-gradient(90deg,var(--deep),var(--gold),var(--olive));
+}
+
+.auth-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:20px;
+}
+.auth-shield{
+  width:38px;
+  height:38px;
+  border-radius:12px;
+  background:var(--soft);
+  color:var(--olive);
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(31,63,127,.2);
+}
+
+.auth-title{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:26px;
+  font-weight:500;
+  letter-spacing:-.03em;
+  margin:0 0 6px;
+  color:var(--ink);
+}
+.auth-desc{
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.5;
+  margin:0 0 20px;
+}
+.auth-form{
+  display:grid;
+  gap:14px;
+}
+.auth-input-lg{
+  padding:12px 42px 12px 14px;
+  font-size:14px;
+  border-radius:12px;
+}
+.auth-submit-btn{
+  width:100%;
+  padding:12px 16px;
+  border-radius:12px;
+  font-size:13.5px;
+  margin-top:4px;
+}
+.auth-submit-btn:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+  transform:none;
+}
+.auth-error{
+  font-size:12px;
+  color:var(--danger);
+  background:var(--danger-bg);
+  border:1px solid var(--danger-border);
+  padding:9px 12px;
+  border-radius:10px;
+  line-height:1.4;
+}
+.auth-error:empty{display:none}
+.auth-note{
+  margin-top:16px;
+  padding-top:14px;
+  border-top:1px solid var(--line);
+  font-size:11.5px;
+  color:var(--muted);
+  line-height:1.45;
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+}
+.hash-snippet{
+  margin-top:10px;
+  padding:10px 12px;
+  border-radius:10px;
+  background:var(--bg);
+  border:1px solid var(--line);
+  font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+  font-size:11px;
+  color:var(--ink);
+  word-break:break-all;
+  line-height:1.45;
+}
+.hash-snippet:empty{display:none}
+
+@media(max-width:680px){
+  .wrap{width:min(100% - 24px,540px);padding-top:18px}
+  header{margin-bottom:26px;gap:6px}
+  .brand-pill{padding:7px 10px;font-size:15px;border-radius:10px}
+  .header-controls{gap:5px}
+  .lock-btn{padding:7px 9px;font-size:11px;gap:4px}
+  .lock-btn span.lock-label{display:none}
+  .nav-switch{padding:3px;gap:2px}
+  .nav-switch button{padding:7px 8px;font-size:11px;gap:4px}
+  .nav-switch button svg{width:13px;height:13px}
+  .sim-bar{padding:12px 14px}
+  .sim-controls{justify-content:flex-start}
+  .timetable-section{scroll-margin-top:16px}
+  .toolbar{align-items:flex-start;flex-direction:column;margin-top:28px}
+  .grid{grid-template-columns:1fr}
+  .tabs{width:100%}.tabs button{flex:1;min-width:0}
+  .theme-cards{grid-template-columns:1fr;padding:15px}
+  .security-grid{grid-template-columns:1fr}
+  .security-form{padding:15px}
+  .settings-row{padding:15px}
+  .settings-row .tools-actions{width:100%}
+  .subject-head{padding:15px}
+  .subject-head h3{font-size:19px}
+  .tools-actions{width:100%}
+  .action-btn{flex:1}
+  .raw-table th.col-check,.raw-table td.col-check{min-width:58px;padding:10px 8px}
+  .raw-table td:first-child{min-width:180px}
+  .back-top-btn{right:14px;bottom:16px;padding:9px 13px;font-size:11.5px}
+  .auth-card{padding:24px 20px 22px;border-radius:20px}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+  }
+}
+
+/* ===== Editorial polish layer (visual only) ===== */
+:root{--serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Noto Serif Bengali","Hind Siliguri",serif;--sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Inter,"Noto Sans Bengali","Hind Siliguri",sans-serif;--r-sm:10px;--r-md:16px;--r-lg:22px;--r-xl:28px;--ease:cubic-bezier(.22,1,.36,1);--spring:cubic-bezier(.34,1.56,.64,1);
+--lift:inset 0 1px 0 rgba(255,255,255,.8),0 1px 2px rgba(23,36,71,.07),0 12px 24px -14px rgba(23,36,71,.2);--lift-hi:inset 0 1px 0 rgba(255,255,255,.85),0 2px 5px rgba(23,36,71,.08),0 22px 36px -16px rgba(23,36,71,.3);--shadow:inset 0 1px 0 rgba(255,255,255,.12),0 2px 6px rgba(23,36,71,.1),0 30px 56px -26px rgba(23,26,52,.45);--card-hover-shadow:var(--lift-hi)}
+:root[data-theme="dark"]{--lift:inset 0 1px 0 rgba(255,255,255,.05),0 1px 2px rgba(0,0,0,.45),0 14px 26px -14px rgba(0,0,0,.6);--lift-hi:inset 0 1px 0 rgba(255,255,255,.07),0 2px 5px rgba(0,0,0,.5),0 24px 38px -16px rgba(0,0,0,.7);--shadow:inset 0 1px 0 rgba(255,255,255,.06),0 2px 6px rgba(0,0,0,.5),0 32px 60px -26px rgba(0,0,0,.75);--card-hover-shadow:var(--lift-hi)}
+@keyframes headlineReveal{from{opacity:0;transform:translateY(10px);letter-spacing:-.02em}to{opacity:1;transform:none;letter-spacing:-.035em}}
+@keyframes cardEntrance{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+::selection{background:rgba(206,154,65,.38)}
+body{font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.55;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .36 0 0 0 0 .4 0 0 0 0 .22 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+:root[data-theme="dark"] body::before{mix-blend-mode:screen;opacity:.3}
+.wrap{position:relative;z-index:1}
+h1,.section-title,.subject-head h3,.auth-title,.nextname,.brand-pill{font-family:var(--serif)}
+h1{font-weight:450;line-height:1.04;text-wrap:balance}
+.brand-pill{letter-spacing:0;padding:9px 18px;border-radius:14px;box-shadow:inset 0 1px 0 rgba(255,255,255,.14),var(--brand-shadow)}
+.brand-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);margin-right:9px;box-shadow:0 0 0 3px rgba(248,187,82,.2)}
+.eyebrow{text-transform:none;letter-spacing:.01em;font-family:var(--serif);font-style:italic;font-weight:500;font-size:15px;color:var(--olive)}
+.section-title{font-weight:450;letter-spacing:-.02em;font-size:29px}
+.subject-head h3{letter-spacing:-.005em;font-weight:500}
+/* hero: the one memorable surface */
+.hero{border-radius:var(--r-xl);box-shadow:var(--shadow),inset 0 0 0 1px rgba(237,202,140,.08);padding:clamp(26px,5vw,48px)}
+.hero-label{text-transform:none;letter-spacing:.02em;font-size:12.5px;font-weight:600}
+.nextname{font-weight:400;letter-spacing:-.02em;text-wrap:balance}
+.timer strong{font-family:var(--serif);font-weight:400;letter-spacing:-.045em}
+.timer span{font-family:var(--serif);font-style:italic;font-size:clamp(11.5px,3vw,14px);color:#c4d2eb}
+.hero-switch{transition:background-color .2s,transform .22s var(--spring),border-color .2s;box-shadow:inset 0 1px 0 rgba(255,255,255,.1)}
+.hero-switch:hover{border-color:rgba(237,202,140,.5)}
+/* surfaces */
+.card,.pill,.action-btn,.lock-btn,.jump-pill,.sample-btn,.theme-card,.data-pill,.summary-chip,.sim-bar,.sim-chip{transition:background-color .2s,border-color .2s,color .18s,box-shadow .25s var(--ease),transform .24s var(--spring),opacity .18s}
+.sim-bar{border-radius:var(--r-md);box-shadow:var(--lift)}
+.card{border-radius:var(--r-md);box-shadow:var(--lift);padding:20px 22px}
+.card:hover{transform:translateY(-3px);box-shadow:var(--lift-hi)}
+.card.is-next,:root[data-theme="dark"] .card.is-next{box-shadow:var(--lift),inset 3px 0 0 var(--olive)}
+.card.is-live,:root[data-theme="dark"] .card.is-live{box-shadow:var(--lift),0 0 0 3px rgba(206,154,65,.16),inset 3px 0 0 var(--gold)}
+.card.is-done,.card.is-done:hover{box-shadow:none}
+.subject{font-family:var(--serif);font-size:17px;font-weight:600;letter-spacing:-.01em}
+.count b{font-family:var(--serif);font-weight:500}
+.pill{text-transform:none;letter-spacing:.02em;font-size:10.5px;font-weight:700;padding:4px 10px}
+.subject-block{border-radius:var(--r-lg);box-shadow:var(--lift)}
+.subject-head,:root[data-theme="dark"] .subject-head{background:linear-gradient(180deg,var(--elevated),var(--paper));padding:20px 24px}
+.sample-box{box-shadow:inset 0 1px 2px rgba(23,36,71,.08)}
+.sample-btn:hover:not(:disabled){transform:scale(1.1)}
+.raw-table th{text-transform:none;letter-spacing:.02em;font-size:11.5px;font-weight:650}
+.raw-table td{padding:12px 16px}
+.raw-table tbody tr:hover td{background:rgba(206,154,65,.08)}
+.raw-table tr.group-row td{text-transform:none;letter-spacing:.01em;font-family:var(--serif);font-style:italic;font-size:13.5px;font-weight:600;box-shadow:inset 3px 0 0 var(--gold)}
+.raw-table input[type=checkbox]{-webkit-appearance:none;appearance:none;width:21px;height:21px;border-radius:7px;border:1.5px solid color-mix(in srgb,var(--olive) 55%,var(--line));background:var(--paper);display:inline-grid;place-content:center;transition:background-color .2s var(--ease),border-color .2s,box-shadow .2s,transform .24s var(--spring)}
+.raw-table input[type=checkbox]::after{content:"";width:10px;height:5px;border:solid #fdfeff;border-width:0 0 2px 2px;transform:rotate(-45deg) scale(0) translate(1px,-1px);transition:transform .24s var(--spring)}
+.raw-table input[type=checkbox]:hover{border-color:var(--olive)}
+.raw-table input[type=checkbox]:checked{background:var(--deep);border-color:var(--deep);box-shadow:0 3px 8px -2px rgba(23,32,66,.45)}
+.raw-table input[type=checkbox]:checked::after{transform:rotate(-45deg) scale(1) translate(1px,-1px)}
+:root[data-theme="dark"] .raw-table input[type=checkbox]:checked{background:var(--olive);border-color:var(--olive)}
+:root[data-theme="dark"] .raw-table input[type=checkbox]::after{border-color:#0d0e1a}
+/* controls */
+.nav-switch,.tabs{box-shadow:inset 0 1px 2px rgba(23,36,71,.1)}
+.action-btn,.lock-btn{border-radius:12px;box-shadow:var(--lift)}
+.lock-btn{border-radius:99px}
+.action-btn:active,.lock-btn:active{box-shadow:inset 0 2px 4px rgba(0,0,0,.14)}
+.action-btn.primary{background:linear-gradient(180deg,#293667,var(--deep));border-color:#1a2245;box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 8px 16px -8px rgba(23,32,66,.6)}
+:root[data-theme="dark"] .action-btn.primary{background:linear-gradient(180deg,#25336e,#1a265b);border-color:#2b3b82}
+.action-btn.primary:active{box-shadow:inset 0 2px 5px rgba(0,0,0,.35)}
+.syllabus-search,.auth-input{border-radius:var(--r-sm);box-shadow:inset 0 1px 2px rgba(23,36,71,.07)}
+.syllabus-search{border-radius:var(--r-md)}
+.syllabus-search:focus,.auth-input:focus,:root[data-theme="dark"] .syllabus-search:focus,:root[data-theme="dark"] .auth-input:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(206,154,65,.22)}
+.jump-pill:hover{box-shadow:var(--lift)}
+.back-top-btn{box-shadow:var(--lift-hi)}
+/* settings */
+.settings-row,.security-form{padding:20px 24px}
+.theme-card{border-radius:var(--r-md)}
+.theme-card[aria-pressed=true]{box-shadow:var(--lift),inset 0 0 0 1px var(--olive)}
+.status-banner{border-radius:var(--r-sm)}
+.hash-snippet{border-radius:var(--r-sm)}
+.data-pill,.summary-chip{box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
+/* lock screen */
+.auth-overlay{background:radial-gradient(60rem 36rem at 10% 6%,rgba(31,63,127,.22),transparent 62%),radial-gradient(48rem 30rem at 94% 98%,rgba(206,154,65,.24),transparent 62%),rgba(234,237,246,.84);backdrop-filter:blur(22px) saturate(1.1);-webkit-backdrop-filter:blur(22px) saturate(1.1)}
+:root[data-theme="dark"] .auth-overlay{background:radial-gradient(60rem 36rem at 10% 6%,rgba(42,69,148,.2),transparent 62%),radial-gradient(48rem 30rem at 94% 98%,rgba(248,187,82,.13),transparent 62%),rgba(10,11,23,.86)}
+.auth-card,:root[data-theme="dark"] .auth-card{border-radius:var(--r-xl);padding:36px 34px 30px;box-shadow:var(--shadow),0 0 0 7px rgba(253,254,255,.32)}
+:root[data-theme="dark"] .auth-card{box-shadow:var(--shadow),0 0 0 7px rgba(255,255,255,.03)}
+.auth-card:after{content:"";position:absolute;width:230px;height:230px;border:1px solid rgba(206,154,65,.3);border-radius:50%;right:-84px;bottom:-118px;box-shadow:0 0 0 24px rgba(206,154,65,.05),0 0 0 50px rgba(206,154,65,.035);pointer-events:none}
+.auth-title{font-size:31px;font-weight:450;letter-spacing:-.025em}
+.auth-desc{font-size:13.5px;line-height:1.6}
+.auth-shield{border-radius:14px;box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 0 0 4px rgba(206,154,65,.14);border-color:rgba(206,154,65,.4);color:var(--deep)}
+:root[data-theme="dark"] .auth-shield{color:var(--gold)}
+.auth-submit-btn{padding:14px 16px;font-size:14px}
+.auth-note{line-height:1.55}
+@media(max-width:680px){.hero{border-radius:22px}.auth-card{padding:28px 22px 24px}.card{padding:18px}}
+
+/* ===== Smoothness pass: motion + clock-simulation card in Settings ===== */
+:root{--glide:cubic-bezier(.22,1,.36,1);--soft-ease:cubic-bezier(.4,0,.2,1)}
+@keyframes fadeSlideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes cardEntrance{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes slideInFromRight{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+@keyframes slideInFromLeft{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:none}}
+@keyframes headlineReveal{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes slowPulse{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.05);opacity:1}}
+@keyframes timetableSpotlight{0%{box-shadow:0 0 0 0 rgba(240,176,60,0)}35%{box-shadow:0 0 0 6px rgba(240,176,60,.26)}100%{box-shadow:0 0 0 0 rgba(240,176,60,0)}}
+h1{letter-spacing:-.03em}
+.hero:after{animation-duration:14s}
+/* "both" kept the final keyframe on forever and blocked the card hover lift */
+.card.card-enter,.view-animate,.view-slide-right,.view-slide-left,.grid.slide-from-right,.grid.slide-from-left,h1{animation-fill-mode:backwards}
+.view-stage{will-change:auto}
+.view-stage.is-swiping{will-change:transform}
+/* one gentle transition on every surface, so theme changes fade instead of snapping */
+body,.hero,.card,.subject-block,.subject-head,.settings-row,.security-form,.nav-switch,.tabs,.brand-pill,.theme-card,.data-pill,.summary-chip,.jump-pill,.sim-chip,.sim-datetime,.action-btn,.lock-btn,.syllabus-search,.auth-input,.auth-card,.raw-table th,.raw-table td{
+  transition-property:background-color,border-color,color,box-shadow,transform,opacity;
+  transition-duration:.3s;transition-timing-function:var(--soft-ease)}
+.card,.action-btn,.lock-btn,.sim-chip,.theme-card,.jump-pill{transition-duration:.26s;transition-timing-function:var(--glide)}
+.nav-glider,.tab-glider{transition-timing-function:var(--glide);transition-duration:.38s}
+.card:active{transform:translateY(-1px) scale(.995)}
+.action-btn:active,.sim-chip:active,.theme-card:active{transform:scale(.97)}
+.timer strong{font-variant-numeric:tabular-nums}
+.hero-label,.nextname{text-wrap:balance}
+:focus-visible{outline-offset:3px}
+
+/* Clock simulation as a settings card */
+.sim-bar.settings-block{display:block;margin-top:0;padding:0 0 4px}
+.sim-bar.settings-block .subject-head{border-radius:0}
+.sim-bar.is-simulating{border-color:var(--gold);box-shadow:var(--lift),0 0 0 3px rgba(240,176,60,.16)}
+.sim-bar.settings-block .sim-controls{justify-content:flex-start;gap:10px;padding:18px 24px 20px}
+.sim-chip{min-height:38px;padding:8px 15px;font-size:12.5px}
+.sim-datetime{min-height:38px;padding:7px 14px;font-size:12.5px;max-width:230px}
+.sim-badge{transition:background-color .3s var(--soft-ease),color .3s var(--soft-ease)}
+@media(max-width:680px){.sim-bar.settings-block .sim-controls{padding:15px}.sim-datetime{max-width:100%;flex:1 1 100%}}
+</style>
+</head>
+<body class="is-locked">
+
+<!-- Single-Owner Password Lock Overlay -->
+<div id="authOverlay" class="auth-overlay" role="dialog" aria-modal="true" aria-labelledby="authOwnerTitle">
+  <div class="auth-card" id="authCard">
+    <div class="auth-header">
+      <span class="brand-pill">বিজয়</span>
+      <div class="auth-shield" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+    </div>
+
+    <div id="authUnlockMode">
+      <div class="eyebrow" style="margin-bottom:6px">Restricted Personal Vault</div>
+      <h2 class="auth-title" id="authOwnerTitle">Owner Access Only</h2>
+      <p class="auth-desc">This examination dashboard and syllabus vault is restricted to its single owner. Enter the owner password to decrypt and unlock.</p>
+      <form id="unlockPasswordForm" class="auth-form" novalidate>
+        <div class="field-group">
+          <label for="unlockPwdInput">Owner password</label>
+          <div class="pwd-field-wrap">
+            <input type="password" id="unlockPwdInput" class="auth-input auth-input-lg" placeholder="Enter owner password" autocomplete="current-password" required>
+            <button type="button" class="eye-toggle-btn" data-toggle-pwd="unlockPwdInput" aria-label="Show password">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="auth-error" id="unlockError" role="alert"></div>
+        <button type="submit" id="unlockSubmitBtn" class="action-btn primary auth-submit-btn">Unlock Dashboard</button>
+      </form>
+      <div class="auth-note">
+        <svg viewBox="0 0 24 24" width="16" height="16" style="flex-shrink:0;margin-top:1px;color:var(--olive)" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>Single-owner PBKDF2 verification &amp; AES-GCM encrypted storage. Public registration and password resets are disabled.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap" id="appWrap" aria-hidden="true" inert>
+<header>
+  <div class="brand">
+    <span class="brand-pill"><span class="brand-dot" aria-hidden="true"></span>বিজয়</span>
+  </div>
+  <div class="header-controls">
+    <nav class="nav-switch" id="mainNavSwitch" role="tablist" aria-label="Main sections">
+      <span class="nav-glider" id="navGlider" aria-hidden="true"></span>
+      <button type="button" id="viewScheduleBtn" data-view="schedule" role="tab" aria-selected="true" aria-controls="scheduleWindow"><span>Dashboard</span></button>
+      <button type="button" id="viewTrackerBtn" data-view="tracker" role="tab" aria-selected="false" aria-controls="trackerWindow"><span>Tracker</span></button>
+      <button type="button" id="viewSettingsBtn" data-view="settings" role="tab" aria-selected="false" aria-controls="settingsWindow" aria-label="Settings">
+        <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v2.2M12 19.8V22M4.93 4.93l1.56 1.56M17.51 17.51l1.56 1.56M2 12h2.2M19.8 12H22M4.93 19.07l1.56-1.56M17.51 6.49l-1.56-1.56"/></svg>
+        <span>Settings</span>
+      </button>
+    </nav>
+    <button type="button" class="lock-btn" id="headerLockBtn" title="Lock dashboard now" aria-label="Lock dashboard">
+      <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <span class="lock-label">Lock</span>
+    </button>
+  </div>
+</header>
+
+<div id="viewStage" class="view-stage">
+<main id="scheduleWindow" class="view-animate">
+  <div class="eyebrow">ICSE Examination · Year 2027</div>
+  <h1>If not today,<br>then when?</h1>
+
+  <section class="hero" aria-live="off">
+    <div class="hero-top">
+      <div class="hero-label" id="heroLabel">Next examination</div>
+      <button type="button" class="hero-switch" id="heroSwitch" hidden></button>
+    </div>
+    <div class="nextname" id="nextName">Loading your next paper…</div>
+    <div class="timer" id="heroTimer"></div>
+    <div class="hero-foot">
+      <span id="nextDate"></span>
+      <span id="nextType"></span>
+    </div>
+  </section>
+
+  <section class="timetable-section" id="timetableSection" aria-labelledby="listTitle">
+    <div class="toolbar">
+      <h2 class="section-title" id="listTitle">Pre-Board schedule</h2>
+      <div class="tabs" id="scheduleTabs" role="tablist" aria-label="Exam schedule">
+        <span class="tab-glider" id="tabGlider" aria-hidden="true"></span>
+        <button id="preTab" type="button" role="tab" aria-selected="true" aria-controls="examGrid" tabindex="0">Pre-Boards</button>
+        <button id="boardTab" type="button" role="tab" aria-selected="false" aria-controls="examGrid" tabindex="-1">ICSE Boards</button>
+      </div>
+    </div>
+    <div class="grid" id="examGrid" role="tabpanel" aria-labelledby="preTab"></div>
+  </section>
+</main>
+
+<section id="trackerWindow" hidden>
+  <div class="tracker-summary" aria-live="polite">
+    <div class="summary-chip">Overall sample papers: <strong id="overallSamples">0</strong></div>
+    <div class="summary-chip">Subjects tracked: <strong>10</strong></div>
+  </div>
+  <div class="search-bar-wrap">
+    <span class="search-bar-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    </span>
+    <input type="search" id="syllabusSearch" class="syllabus-search" placeholder="Search..." aria-label="Search" autocomplete="off">
+    <button type="button" id="clearSearchBtn" class="search-clear-btn" aria-label="Clear search" hidden>×</button>
+  </div>
+  <nav class="subject-jump-bar" id="subjectJumpBar" aria-label="Jump to subject"></nav>
+  <div id="trackerContainer"></div>
+</section>
+
+<section id="settingsWindow" hidden>
+  <div class="eyebrow">Preferences &amp; data</div>
+  <h1 style="font-size:clamp(32px,5vw,52px)">Settings</h1>
+
+  <!-- Appearance Card -->
+  <section class="subject-block settings-block" style="margin-top:24px" aria-labelledby="appearanceHeading">
+    <div class="subject-head">
+      <h3 id="appearanceHeading">Appearance</h3>
+      <label class="celestial-toggle" title="Switch light / dark theme">
+        <input type="checkbox" id="darkModeToggle">
+        <span class="celestial-track" aria-hidden="true">
+          <span class="celestial-stars">
+            <svg class="star-1" viewBox="0 0 16 16" width="11" height="11" fill="currentColor"><path d="M8 0l1.8 5.2L15 7l-5.2 1.8L8 14l-1.8-5.2L1 7l5.2-1.8z"/></svg>
+            <svg class="star-2" viewBox="0 0 16 16" width="6" height="6" fill="currentColor"><circle cx="8" cy="8" r="5"/></svg>
+            <svg class="star-3" viewBox="0 0 16 16" width="8" height="8" fill="currentColor"><path d="M8 0l1.8 5.2L15 7l-5.2 1.8L8 14l-1.8-5.2L1 7l5.2-1.8z"/></svg>
+          </span>
+          <span class="celestial-clouds">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+          </span>
+          <span class="celestial-thumb">
+            <svg class="icon-sun" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+          </span>
+        </span>
+        <span class="sr-only">Enable dark mode</span>
+      </label>
+    </div>
+    <div class="theme-cards" role="group" aria-label="Theme selection">
+      <button type="button" class="theme-card" id="lightThemeCard" aria-pressed="true">
+        <div class="theme-swatch light-swatch" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        </div>
+        <div class="theme-card-info">
+          <strong>Daylight Paper</strong>
+        </div>
+        <span class="theme-check" aria-hidden="true">✓</span>
+      </button>
+      <button type="button" class="theme-card" id="darkThemeCard" aria-pressed="false">
+        <div class="theme-swatch dark-swatch" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        </div>
+        <div class="theme-card-info">
+          <strong>Night Study</strong>
+        </div>
+        <span class="theme-check" aria-hidden="true">✓</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Clock Simulation Card -->
+  <section class="subject-block settings-block sim-bar" id="simBar" aria-labelledby="simHeading">
+    <div class="subject-head">
+      <div>
+        <h3 id="simHeading">Clock simulation</h3>
+        <div class="settings-subhead">Preview the dashboard on a different date and time</div>
+      </div>
+      <span class="sim-badge" id="simStatusBadge">Real-Time Clock</span>
+    </div>
+    <div class="sim-controls" role="group" aria-label="Simulation presets">
+      <button type="button" class="sim-chip" data-sim-preset="live-clock" aria-pressed="true">Real-Time</button>
+      <button type="button" class="sim-chip" data-sim-preset="2026-12-07T18:00:00+05:30" aria-pressed="false">Pre-Board Eve (7 Dec)</button>
+      <button type="button" class="sim-chip" data-sim-preset="2026-12-14T10:30:00+05:30" aria-pressed="false">Geography Live (14 Dec)</button>
+      <button type="button" class="sim-chip" data-sim-preset="2027-02-14T18:00:00+05:30" aria-pressed="false">Board Eve (14 Feb)</button>
+      <input type="datetime-local" id="simCustomInput" class="sim-datetime" aria-label="Custom simulation date and time" title="Pick a custom date and time to simulate">
+    </div>
+  </section>
+
+  <!-- Security & Owner Access Card -->
+  <section class="subject-block settings-block" aria-labelledby="securityHeading">
+    <div class="subject-head">
+      <div>
+        <h3 id="securityHeading">Security &amp; owner access</h3>
+        <div class="settings-subhead">Single-owner PBKDF2 verification and AES-GCM encrypted local vault</div>
+      </div>
+      <div class="data-pill">
+        <span class="storage-dot" id="securityDot"></span>
+        <strong id="securityStatusBadge">Owner lock &amp; AES-GCM active</strong>
+      </div>
+    </div>
+
+    <div id="securityActiveControls">
+      <form id="changePasswordForm" class="security-form" novalidate>
+        <div>
+          <strong style="font-size:13.5px">Change owner password</strong>
+          <span class="row-desc" style="display:block;font-size:12px;color:var(--muted);margin-top:3px">Re-encrypts your local syllabus vault with a new password and generates a salted PBKDF2 verifier if you wish to embed it permanently in the HTML source.</span>
+        </div>
+        <div class="security-grid">
+          <div class="field-group">
+            <label for="currentPwdInput">Current owner password</label>
+            <div class="pwd-field-wrap">
+              <input type="password" id="currentPwdInput" class="auth-input" placeholder="Current password" autocomplete="current-password">
+              <button type="button" class="eye-toggle-btn" data-toggle-pwd="currentPwdInput" aria-label="Show password">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="field-group">
+            <label for="newPwdInput">New owner password</label>
+            <div class="pwd-field-wrap">
+              <input type="password" id="newPwdInput" class="auth-input" placeholder="New password (min 4 chars)" autocomplete="new-password">
+              <button type="button" class="eye-toggle-btn" data-toggle-pwd="newPwdInput" aria-label="Show password">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="field-group">
+            <label for="confirmNewPwdInput">Confirm new password</label>
+            <div class="pwd-field-wrap">
+              <input type="password" id="confirmNewPwdInput" class="auth-input" placeholder="Confirm new password" autocomplete="new-password">
+              <button type="button" class="eye-toggle-btn" data-toggle-pwd="confirmNewPwdInput" aria-label="Show password">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="tools-actions">
+          <button type="submit" class="action-btn primary">Update owner password</button>
+          <button type="button" class="action-btn" id="settingsLockNowBtn">Lock dashboard now</button>
+        </div>
+        <div class="hash-snippet" id="generatedVerifierBox" aria-live="polite"></div>
+      </form>
+
+      <div class="settings-row" id="restoreDefaultOwnerRow" hidden>
+        <div style="flex:1 1 260px">
+          <strong>Restore built-in owner password</strong>
+          <span class="row-desc">Revert from your browser-local password override back to the hardcoded owner credential in this HTML file (re-encrypts your vault).</span>
+        </div>
+        <div class="tools-actions" style="align-items:center">
+          <div class="pwd-field-wrap" style="min-width:190px">
+            <input type="password" id="restoreDefaultPwdInput" class="auth-input" placeholder="Current password" autocomplete="current-password">
+            <button type="button" class="eye-toggle-btn" data-toggle-pwd="restoreDefaultPwdInput" aria-label="Show password">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <div class="pwd-field-wrap" style="min-width:190px"><input type="password" id="restoreBuiltinPwdInput" class="auth-input" placeholder="Built-in password" autocomplete="off"><button type="button" class="eye-toggle-btn" data-toggle-pwd="restoreBuiltinPwdInput" aria-label="Show password"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+          <button type="button" class="action-btn" id="restoreDefaultOwnerBtn">Use built-in password</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="status-banner" id="securityStatus" role="status" aria-live="polite"></div>
+  </section>
+
+
+  <!-- Progress & Data Management Card -->
+  <section class="subject-block settings-block" aria-labelledby="dataHeading">
+    <div class="subject-head">
+      <div>
+        <h3 id="dataHeading">Progress &amp; data management</h3>
+        <div class="settings-subhead">Local browser persistence and JSON backup tools</div>
+      </div>
+    </div>
+    <div class="data-overview" aria-live="polite">
+      <div class="data-pill"><span class="storage-dot" id="storageDot"></span><span id="storageBadgeText">Browser storage active</span></div>
+      <div class="data-pill">Syllabus items checked: <strong id="settingsCheckedCount">0</strong></div>
+      <div class="data-pill">Sample papers logged: <strong id="settingsSamplesCount">0</strong></div>
+    </div>
+    <div class="settings-row">
+      <div>
+        <strong>Export JSON backup</strong>
+        <span class="row-desc">Download a timestamped snapshot of your syllabus checkboxes, sample counts, and security settings.</span>
+      </div>
+      <div class="tools-actions">
+        <button type="button" class="action-btn" id="exportBtn">Export backup</button>
+      </div>
+    </div>
+    <div class="settings-row">
+      <div>
+        <strong>Import backup file</strong>
+        <span class="row-desc">Restore your saved progress from a previously exported <code style="font-size:11px">.json</code> file.</span>
+      </div>
+      <div class="tools-actions">
+        <button type="button" class="action-btn" id="importBtn">Import backup</button>
+        <input class="import-input" id="importFile" type="file" accept="application/json,.json">
+      </div>
+    </div>
+    <div class="settings-row">
+      <div>
+        <strong>Reset syllabus &amp; sample progress</strong>
+        <span class="row-desc">Clear all checked syllabus boxes and sample-paper counts without removing your password.</span>
+      </div>
+      <div class="tools-actions">
+        <button type="button" class="action-btn danger" id="resetBtn">Reset progress</button>
+      </div>
+    </div>
+    <div class="status-banner" id="storageStatus" role="status" aria-live="polite"></div>
+  </section>
+</section>
+</div>
+</div>
+
+<button type="button" class="back-top-btn" id="backTopBtn" hidden aria-label="Scroll back to top">↑ Top</button>
+
+<script>
+const schedules = {
+  pre: [
+    ["English Language","2026-12-08T10:15:00+05:30"],
+    ["English Literature","2026-12-09T10:15:00+05:30"],
+    ["Bengali","2026-12-10T10:15:00+05:30"],
+    ["Mathematics","2026-12-11T10:15:00+05:30"],
+    ["History & Civics","2026-12-12T10:15:00+05:30"],
+    ["Geography","2026-12-14T10:15:00+05:30"],
+    ["Physics","2026-12-15T10:15:00+05:30"],
+    ["Computer Applications","2026-12-16T10:15:00+05:30"],
+    ["Chemistry","2026-12-17T10:15:00+05:30"],
+    ["Biology","2026-12-18T10:15:00+05:30"]
+  ],
+  board: [
+    ["English Language","2027-02-15T10:15:00+05:30"],
+    ["English Literature","2027-02-18T10:15:00+05:30"],
+    ["Mathematics","2027-02-22T10:15:00+05:30"],
+    ["History & Civics","2027-02-26T10:15:00+05:30"],
+    ["Geography","2027-03-01T10:15:00+05:30"],
+    ["Physics","2027-03-08T10:15:00+05:30"],
+    ["Chemistry","2027-03-12T10:15:00+05:30"],
+    ["Biology","2027-03-15T10:15:00+05:30"],
+    ["Computer Applications","2027-03-17T10:15:00+05:30"],
+    ["Bengali","2027-03-19T10:15:00+05:30"]
+  ]
+};
+
+const SYLLABUS = [
+  {
+    id: "eng-lang",
+    shortTitle: "English Lang",
+    title: "1. English Language",
+    sampleLabel: "Sample Papers",
+    chapterLabel: "Chapter",
+    columns: ["Concept", "Practice", "PYQ"],
+    rows: [
+      "Composition",
+      "Letter Writing",
+      "Notice and Email Writing",
+      "Comprehension",
+      "Grammar",
+      "Transformation of Sentences"
+    ]
+  },
+  {
+    id: "eng-lit",
+    shortTitle: "English Lit",
+    title: "2. English Literature",
+    sampleLabel: "Sample Papers",
+    chapterLabel: "Chapter",
+    columns: ["Explanation", "PYQ"],
+    rows: [
+      { group: "Drama — Julius Caesar" },
+      "Act III",
+      "Act IV",
+      "Act V",
+      { group: "Treasure Chest — Prose" },
+      "With the Photographer",
+      "The Elevator",
+      "The Girl Who Can",
+      "The Pedestrian",
+      "The Last Lesson",
+      { group: "Treasure Chest — Poetry" },
+      "Haunted Houses",
+      "The Glove and the Lions",
+      "When Great Trees Fall",
+      "A Considerable Speck",
+      "The Power of Music"
+    ]
+  },
+  {
+    id: "bengali",
+    shortTitle: "বাংলা",
+    title: "3. বাংলা (Bengali)",
+    sampleLabel: "নমুনা প্রশ্নপত্র",
+    chapterLabel: "অধ্যায়",
+    columns: ["ব্যাখ্যা", "PYQ"],
+    rows: [
+      { group: "বাংলা ভাষা" },
+      "ব্যাকরণ",
+      { group: "বাংলা সাহিত্য — (I) ছোটগল্প" },
+      "১. বামা - বিভূতিভূষণ বন্দ্যোপাধ্যায়",
+      "২. নাম - নরেন্দ্রনাথ মিত্র",
+      "৩. অসহযোগী - মানিক বন্দ্যোপাধ্যায়",
+      "৪. গন্ধটা খুব সন্দেহজনক - শীর্ষেন্দু মুখোপাধ্যায়",
+      "৫. লোকটি - হুমায়ূন আহমেদ",
+      { group: "বাংলা সাহিত্য — (II) কবিতা" },
+      "১. বঙ্গভূমির প্রতি – মাইকেল মধুসূদন দত্ত",
+      "২. কুলি-মজুর – কাজী নজরুল ইসলাম",
+      "৩. আবার আসিব ফিরে - জীবনানন্দ দাশ",
+      "৪. অমলকান্তি - নীরেন্দ্রনাথ চক্রবর্তী",
+      "৫. খো-খো - অমিতাভ দাশগুপ্ত"
+    ]
+  },
+  {
+    id: "maths",
+    shortTitle: "Mathematics",
+    title: "4. Mathematics",
+    sampleLabel: "Sample Papers",
+    chapterLabel: "Chapter",
+    columns: ["Concept", "ML Aggarwal", "PYQ"],
+    rows: [
+      "Goods and Services Tax (GST)",
+      "Banking",
+      "Shares and Dividends",
+      "Linear Inequations",
+      "Quadratic Equations",
+      "Ratio and Proportion",
+      "Factorisation of Polynomials",
+      "Matrices",
+      "Arithmetic Progression (AP)",
+      "Geometric Progression (GP)",
+      "Reflection",
+      "Section Formula",
+      "Equation of a Straight Line",
+      "Similarity",
+      "Loci",
+      "Circles",
+      "Constructions",
+      "Mensuration",
+      "Trigonometric Identities",
+      "Trigonometrical Tables",
+      "Heights and Distances",
+      "Measures of Central Tendency",
+      "Probability"
+    ]
+  },
+  {
+    id: "comp",
+    shortTitle: "Computer",
+    title: "5. Computer Applications",
+    sampleLabel: "Sample Papers",
+    chapterLabel: "Chapter",
+    columns: ["Concept", "APC", "PYQ"],
+    rows: [
+      "Class IX Revision",
+      "Objects and Classes",
+      "User-defined Methods",
+      "Constructors",
+      "Library and Wrapper Classes",
+      "Encapsulation",
+      "Arrays",
+      "String Handling"
+    ]
+  },
+  {
+    id: "physics",
+    shortTitle: "Physics",
+    title: "6. Physics",
+    sampleLabel: "Sample Papers",
+    chapterLabel: "Chapter",
+    columns: ["Concept", "Selina", "PYQ"],
+    rows: [
+      "Force",
+      "Work, Power and Energy",
+      "Machines",
+      "Refraction of Light at Plane Surfaces",
+      "Refraction of Light through a Lens",
+      "Spectrum",
+      "Sound",
+      "Current Electricity",
+      "Household Circuits",
+      "Electro-Magnetism",
+      "Calorimetry",
+      "Radioactivity"
+    ]
+  },
+  {
+    id: "chemistry",
+    shortTitle: "Chemistry",
+    title: "7. Chemistry",
+    sampleLabel: "Sample Papers",
+    chapterLabel: "Chapter",
+    columns: ["Concept", "Selina", "PYQ"],
+    rows: [
+      "Periodic Properties",
+      "Chemical Bonding",
+      "Acids, Bases and Salts",
+      "Analytical Chemistry",
+      "Mole Concept and Stoichiometry",
+      "Electrolysis",
+      "Metallurgy",
+      { group: "Study of Compounds" },
+      "Hydrogen Chloride",
+      "Ammonia",
+      "Nitric Acid",
+      "Sulphuric Acid",
+      { group: "Organic" },
+      "Organic Chemistry"
+    ]
+  },
+  {
+    id: "biology",
+    shortTitle: "Biology",
+    title: "8. Biology",
+    sampleLabel: "Sample Papers",
+    chapterLabel: "Chapter",
+    columns: ["Concept", "Selina", "PYQ"],
+    rows: [
+      { group: "1. Basic Biology" },
+      "Study of chromosomes, cell cycle and division",
+      "Genetics",
+      { group: "2. Plant Physiology" },
+      "Absorption by Roots",
+      "Transpiration",
+      "Photosynthesis",
+      "Chemical Coordination in Plants",
+      { group: "3. Human Anatomy and Physiology" },
+      "Circulatory System",
+      "Excretory System",
+      "Nervous System",
+      "Sense Organs",
+      "Endocrine System",
+      "Reproductive System",
+      { group: "4. Human Evolution" },
+      "Human Evolution",
+      { group: "5. Population" },
+      "Population",
+      { group: "6. Pollution" },
+      "Pollution"
+    ]
+  },
+  {
+    id: "history",
+    shortTitle: "History & Civics",
+    title: "9. History & Civics",
+    sampleLabel: "Sample Papers",
+    chapterLabel: "Chapter",
+    columns: ["Notes", "Total", "PYQ"],
+    rows: [
+      { group: "History — 1. The Indian National Movement (1857–1917)" },
+      "The First War of Independence, 1857",
+      "Growth of Nationalism",
+      "First Phase of the Indian National Movement (1885–1907)",
+      "Second Phase of the Indian National Movement (1905–1916)",
+      "The Muslim League",
+      { group: "History — 2. Mass Phase of the National Movement (1915–1947)" },
+      "Mahatma Gandhi and the National Movement",
+      "Quit India Movement",
+      "Forward Bloc and Indian National Army (INA)",
+      "Independence and Partition of India",
+      { group: "History — 3. The Contemporary World" },
+      "The First World War",
+      "Rise of Dictatorships",
+      "The Second World War",
+      "United Nations",
+      "Major Agencies of the UN",
+      "Non-Aligned Movement (NAM)",
+      { group: "Civics" },
+      "The Union Legislature",
+      "The Union Executive",
+      "The Union Judiciary"
+    ]
+  },
+  {
+    id: "geography",
+    shortTitle: "Geography",
+    title: "10. Geography",
+    sampleLabel: "Sample Papers",
+    chapterLabel: "Chapter",
+    columns: ["Concept", "Total", "PYQ"],
+    rows: [
+      "Interpretation of Topographical Maps",
+      "Map of India",
+      "Climate",
+      "Soil Resources",
+      "Natural Vegetation",
+      "Water Resources",
+      "Mineral and Energy Resources",
+      "Agriculture",
+      "Manufacturing Industries",
+      "Transport",
+      "Waste Management"
+    ]
+  }
+];
+
+const VIEW_ORDER = ["schedule", "tracker", "settings"];
+const STORAGE_KEY = "exam_atlas_raw_tracker_v1";
+const AUTH_OVERRIDE_KEY = "exam_atlas_owner_override_v1";
+const LOCKOUT_STORAGE_KEY = "exam_atlas_lockout_v1";
+const SESSION_KEY_MATERIAL = "exam_atlas_session_km_v1";
+const BACKUP_VERSION = 2;
+
+/* =========================================================
+   OWNER CREDENTIAL (built-in default password: "bijoy")
+   Verifier = HKDF( PBKDF2-HMAC-SHA256(password, salt, iterations) ).
+   To bake a new password into this file, change it in Settings and
+   paste the three constants that Settings shows.
+   ========================================================= */
+const BUILTIN_OWNER_ITERATIONS = 600000;
+const BUILTIN_OWNER_SALT = "4fd7cf0a4840c9247d2333fe6afc61a0";
+const BUILTIN_OWNER_HASH = "f1feeb872ce4c9de2cc72b500aef432c761efa33f4b1780682fbccbbf9cf8d7e";
+const LEGACY_BUILTIN_SALT = "b94f82c10e7d4a319c6b58f204e1a9d7"; // only to read vaults saved by older builds
+const MAX_FAILED_ATTEMPTS = 5;
+const LOCKOUT_DURATION_MS = 30000;
+const DEFAULT_DURATIONS = Object.fromEntries(SYLLABUS.map(subject => [
+  subject.id, ["maths","bengali"].includes(subject.id) ? 180 : 120
+]));
+
+let currentView = "schedule";
+let active = "pre";
+let searchQuery = "";
+let storageAvailable = true;
+let trackerState = { checks: {}, samples: {}, theme: "light" };
+let activeOwnerVerifier = { salt: BUILTIN_OWNER_SALT, hash: BUILTIN_OWNER_HASH, isOverride: false };
+let activeVaultKey = null;
+let isAppUnlocked = false;
+let lockoutTimerInterval = null;
+let gridRenderSignature = "";
+let pendingSlideDirection = null;
+
+/* Non-destructive clock simulation state (in-memory only, never persisted) */
+let simOffsetMs = null; // null = live real-time clock; number = simulatedMs - Date.now()
+
+function getEffectiveNow() {
+  return simOffsetMs === null ? Date.now() : Date.now() + simOffsetMs;
+}
+
+/* =========================================================
+   KEY DERIVATION, CONSTANT-TIME CHECK & AES-GCM VAULT
+   password -> PBKDF2-HMAC-SHA256(salt, iterations) -> master secret
+     master -> HKDF "bijoy/verifier/v3" -> verifier (checked in constant time)
+     master -> HKDF "bijoy/vault/v3"    -> AES-256-GCM vault key
+   ========================================================= */
+/*KDF-BEGIN*/
+const te = new TextEncoder();
+function bytesToHex(bytes) { return Array.from(bytes, b => b.toString(16).padStart(2, "0")).join(""); }
+function hexToBytes(hex) {
+  const clean = String(hex || "").replace(/[^a-f0-9]/gi, "");
+  const out = new Uint8Array(Math.floor(clean.length / 2));
+  for (let i = 0; i < out.length; i++) out[i] = parseInt(clean.substr(i * 2, 2), 16);
+  return out;
+}
+async function deriveMaster(password, saltHex, iterations) {
+  const base = await crypto.subtle.importKey("raw", te.encode(String(password).normalize("NFKC")), "PBKDF2", false, ["deriveBits"]);
+  const bits = await crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt: hexToBytes(saltHex), iterations }, base, 256);
+  return crypto.subtle.importKey("raw", bits, "HKDF", false, ["deriveBits"]);
+}
+async function subKeyBits(master, label) {
+  return new Uint8Array(await crypto.subtle.deriveBits({ name: "HKDF", hash: "SHA-256", salt: new Uint8Array(0), info: te.encode(label) }, master, 256));
+}
+/*KDF-END*/
+function bytesToBase64(bytes) { let s = ""; for (let i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]); return btoa(s); }
+function base64ToBytes(b64) { const s = atob(b64), out = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) out[i] = s.charCodeAt(i); return out; }
+function generateSalt(n = 16) { const b = new Uint8Array(n); crypto.getRandomValues(b); return bytesToHex(b); }
+
+/* Compares every byte, never exits early, folds length mismatch into the result */
+function timingSafeEqual(a, b) {
+  const len = Math.max(a.length, b.length);
+  let diff = a.length ^ b.length;
+  for (let i = 0; i < len; i++) diff |= (a[i] || 0) ^ (b[i] || 0);
+  return diff === 0;
+}
+
+const VAULT_AAD = te.encode("bijoy/vault/v3");
+const importVaultKey = bits => crypto.subtle.importKey("raw", bits, { name: "AES-GCM" }, false, ["encrypt", "decrypt"]);
+
+async function checkPassword(pwd, v) {
+  if (v.legacy) {
+    const d = new Uint8Array(await crypto.subtle.digest("SHA-256", te.encode(`${v.salt}::bijoy_icse_2027::${pwd}`)));
+    return { ok: timingSafeEqual(d, hexToBytes(v.hash)) };
+  }
+  const master = await deriveMaster(pwd, v.salt, v.iter);
+  const ok = timingSafeEqual(await subKeyBits(master, "bijoy/verifier/v3"), hexToBytes(v.hash));
+  return ok ? { ok, vaultBits: await subKeyBits(master, "bijoy/vault/v3") } : { ok };
+}
+
+async function newVerifier(pwd) {
+  const salt = generateSalt(), iter = BUILTIN_OWNER_ITERATIONS;
+  const master = await deriveMaster(pwd, salt, iter);
+  return { salt, iter, hash: bytesToHex(await subKeyBits(master, "bijoy/verifier/v3")), bits: await subKeyBits(master, "bijoy/vault/v3") };
+}
+
+async function sealVault(obj, key) {
+  const iv = new Uint8Array(12);
+  crypto.getRandomValues(iv);
+  const ct = await crypto.subtle.encrypt({ name: "AES-GCM", iv, additionalData: VAULT_AAD }, key, te.encode(JSON.stringify(obj)));
+  return { v: 3, alg: "AES-GCM-256", iv: bytesToBase64(iv), ct: bytesToBase64(new Uint8Array(ct)) };
+}
+
+async function openVault(env, key) {
+  if (!env || env.v !== 3 || !env.iv || !env.ct) throw new Error("bad envelope");
+  const plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: base64ToBytes(env.iv), additionalData: VAULT_AAD }, key, base64ToBytes(env.ct));
+  return JSON.parse(new TextDecoder().decode(plain));
+}
+
+/* v2 vaults (older builds): PBKDF2 120k key, no AAD. Read once, then re-sealed as v3. */
+async function openLegacyVault(env, pwd, saltHex) {
+  const base = await crypto.subtle.importKey("raw", te.encode(`${pwd}::bijoy_vault_aes256`), "PBKDF2", false, ["deriveKey"]);
+  const key = await crypto.subtle.deriveKey({ name: "PBKDF2", salt: hexToBytes(saltHex), iterations: 120000, hash: "SHA-256" }, base, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+  const plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: base64ToBytes(env.iv) }, key, base64ToBytes(env.ct));
+  return JSON.parse(new TextDecoder().decode(plain));
+}
+
+/* Session persistence. The stored key alone never unlocks anything:
+   it must also authenticate (AES-GCM tag) the existing v3 vault. Missing,
+   malformed, legacy or forged data fails closed. */
+function persistSession(bits) {
+  try { sessionStorage.setItem(SESSION_KEY_MATERIAL, JSON.stringify({ v: 3, k: bytesToBase64(bits) })); } catch (error) {}
+}
+function clearSessionKey() {
+  activeVaultKey = null;
+  isAppUnlocked = false;
+  try { sessionStorage.removeItem(SESSION_KEY_MATERIAL); } catch (error) {}
+}
+function readRawVault() {
+  try { return localStorage.getItem(STORAGE_KEY); } catch (error) { return null; }
+}
+async function restoreSession() {
+  try {
+    const rec = JSON.parse(sessionStorage.getItem(SESSION_KEY_MATERIAL) || "null");
+    if (!rec || rec.v !== 3 || typeof rec.k !== "string") return null;
+    const bits = base64ToBytes(rec.k);
+    if (bits.length !== 32) return null;
+    const key = await importVaultKey(bits);
+    const raw = readRawVault();
+    if (!raw) return null;
+    const data = await openVault(JSON.parse(raw), key);
+    return data && typeof data === "object" ? { key, data } : null;
+  } catch (error) {
+    return null;
+  }
+}
+
+function loadOwnerVerifier() {
+  activeOwnerVerifier = { salt: BUILTIN_OWNER_SALT, hash: BUILTIN_OWNER_HASH, iter: BUILTIN_OWNER_ITERATIONS, legacy: false, isOverride: false };
+  try {
+    const p = JSON.parse(localStorage.getItem(AUTH_OVERRIDE_KEY) || "null");
+    if (!p || !/^[a-f0-9]{64}$/i.test(String(p.hash || ""))) return;
+    if (p.v === 3 && /^[a-f0-9]{32}$/i.test(String(p.salt || "")) && Number.isInteger(p.iter) && p.iter >= 100000 && p.iter <= 5000000) {
+      activeOwnerVerifier = { salt: p.salt, hash: p.hash, iter: p.iter, legacy: false, isOverride: true };
+    } else if (!p.v && /^[a-f0-9]{16,64}$/i.test(String(p.salt || ""))) {
+      activeOwnerVerifier = { salt: p.salt, hash: p.hash, iter: 0, legacy: true, isOverride: true };
+    }
+  } catch (error) {}
+}
+function saveOwnerOverride({ salt, hash, iter }) {
+  try {
+    localStorage.setItem(AUTH_OVERRIDE_KEY, JSON.stringify({ v: 3, kdf: "PBKDF2-SHA256", iter, salt, hash }));
+    activeOwnerVerifier = { salt, hash, iter, legacy: false, isOverride: true };
+    return true;
+  } catch (error) { return false; }
+}
+function clearOwnerOverride() {
+  try { localStorage.removeItem(AUTH_OVERRIDE_KEY); } catch (error) {}
+  activeOwnerVerifier = { salt: BUILTIN_OWNER_SALT, hash: BUILTIN_OWNER_HASH, iter: BUILTIN_OWNER_ITERATIONS, legacy: false, isOverride: false };
+}
+
+/* Brute-Force Attempt & 30-Second Cooldown Management */
+function getLockoutState() {
+  try {
+    const raw = localStorage.getItem(LOCKOUT_STORAGE_KEY);
+    if (!raw) return { attempts: 0, lockedUntil: 0 };
+    const parsed = JSON.parse(raw);
+    return {
+      attempts: Math.max(0, Number(parsed.attempts) || 0),
+      lockedUntil: Math.max(0, Number(parsed.lockedUntil) || 0)
+    };
+  } catch (error) {
+    return { attempts: 0, lockedUntil: 0 };
+  }
+}
+
+function saveLockoutState(attempts, lockedUntil) {
+  try {
+    localStorage.setItem(LOCKOUT_STORAGE_KEY, JSON.stringify({ attempts, lockedUntil }));
+  } catch (error) {}
+}
+
+function clearLockoutState() {
+  try {
+    localStorage.removeItem(LOCKOUT_STORAGE_KEY);
+  } catch (error) {}
+  if (lockoutTimerInterval) {
+    clearInterval(lockoutTimerInterval);
+    lockoutTimerInterval = null;
+  }
+}
+
+function updateLockoutCooldownUI() {
+  const errorEl = document.getElementById("unlockError");
+  const submitBtn = document.getElementById("unlockSubmitBtn");
+  const pwdInput = document.getElementById("unlockPwdInput");
+  if (!errorEl || !submitBtn || !pwdInput) return;
+
+  const state = getLockoutState();
+  const remainingMs = state.lockedUntil - Date.now();
+
+  if (remainingMs > 0) {
+    const secs = Math.ceil(remainingMs / 1000);
+    submitBtn.disabled = true;
+    pwdInput.disabled = true;
+    errorEl.textContent = `Too many failed attempts. Try again in ${secs}s.`;
+    if (!lockoutTimerInterval) {
+      lockoutTimerInterval = setInterval(updateLockoutCooldownUI, 250);
+    }
+  } else {
+    if (lockoutTimerInterval) {
+      clearInterval(lockoutTimerInterval);
+      lockoutTimerInterval = null;
+    }
+    if (state.lockedUntil > 0) {
+      saveLockoutState(0, 0);
+      errorEl.textContent = "";
+    }
+    submitBtn.disabled = false;
+    pwdInput.disabled = false;
+  }
+}
+
+function triggerCardShake(el) {
+  if (!el) return;
+  el.classList.remove("shake-error");
+  void el.offsetWidth;
+  el.classList.add("shake-error");
+}
+
+function setSecurityStatus(message, isError = false) {
+  const el = document.getElementById("securityStatus");
+  if (!el) return;
+  el.textContent = message;
+  el.classList.toggle("is-error", isError);
+  el.style.animation = "none";
+  void el.offsetWidth;
+  el.style.animation = "";
+}
+
+function updateSecurityUI() {
+  const securityBadge = document.getElementById("securityStatusBadge");
+  const restoreRow = document.getElementById("restoreDefaultOwnerRow");
+
+  if (securityBadge) {
+    securityBadge.textContent = activeOwnerVerifier.isOverride
+      ? "Owner lock active (Custom override)"
+      : "Owner lock active (Built-in verifier)";
+  }
+  if (restoreRow) {
+    restoreRow.hidden = !activeOwnerVerifier.isOverride;
+  }
+}
+
+function lockDashboard() {
+  clearSessionKey();
+  const overlay = document.getElementById("authOverlay");
+  const appWrap = document.getElementById("appWrap");
+  document.body.classList.add("is-locked");
+  if (appWrap) {
+    appWrap.setAttribute("aria-hidden", "true");
+    appWrap.setAttribute("inert", "");
+  }
+  if (overlay) overlay.hidden = false;
+  document.getElementById("unlockError").textContent = "";
+  document.getElementById("unlockPwdInput").value = "";
+  updateLockoutCooldownUI();
+  updateBackToTopVisibility();
+  requestAnimationFrame(() => {
+    const input = document.getElementById("unlockPwdInput");
+    if (input && !input.disabled) input.focus();
+  });
+}
+
+function unlockDashboard() {
+  isAppUnlocked = true;
+  clearLockoutState();
+  const overlay = document.getElementById("authOverlay");
+  const appWrap = document.getElementById("appWrap");
+  document.body.classList.remove("is-locked");
+  if (overlay) overlay.hidden = true;
+  if (appWrap) {
+    appWrap.setAttribute("aria-hidden", "false");
+    appWrap.removeAttribute("inert");
+  }
+  updateSecurityUI();
+  updateNavGlider(true);
+  updateTabGlider(true);
+  updateBackToTopVisibility();
+}
+
+/* =========================================================
+   ENCRYPTED DATA PERSISTENCE & UI HELPERS
+   ========================================================= */
+function setStatus(message) {
+  const el = document.getElementById("storageStatus");
+  if (!el) return;
+  el.textContent = message;
+  el.style.animation = "none";
+  void el.offsetWidth;
+  el.style.animation = "";
+}
+
+function updateStorageIndicators() {
+  const dot = document.getElementById("storageDot");
+  const badgeText = document.getElementById("storageBadgeText");
+  const checkedEl = document.getElementById("settingsCheckedCount");
+  const samplesEl = document.getElementById("settingsSamplesCount");
+  if (dot) dot.classList.toggle("is-warn", !storageAvailable);
+  if (badgeText) badgeText.textContent = storageAvailable ? "AES-GCM encrypted storage active" : "Session-only mode";
+  if (checkedEl) checkedEl.textContent = String(Object.keys(trackerState.checks).length);
+  if (samplesEl) samplesEl.textContent = String(totalSamples());
+}
+
+function applyNormalizedTrackerObject(saved) {
+  if (!saved || typeof saved !== "object") return;
+  trackerState.checks = saved.checks && typeof saved.checks === "object" ? saved.checks : {};
+  trackerState.samples = saved.samples && typeof saved.samples === "object" ? saved.samples : {};
+  trackerState.theme = saved.theme === "dark" ? "dark" : "light";
+  for (const key of Object.keys(trackerState.samples)) {
+    const n = Number(trackerState.samples[key]);
+    trackerState.samples[key] = Number.isFinite(n) ? Math.max(0, Math.floor(n)) : 0;
+  }
+}
+
+async function saveTrackerWith(key) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(await sealVault(trackerState, key)));
+    return true;
+  } catch (error) { return false; }
+}
+
+async function loadVaultWithKey(key, pwd, legacySalt = LEGACY_BUILTIN_SALT) {
+  const raw = readRawVault();
+  if (!raw) return saveTrackerWith(key);
+  let env = null;
+  try { env = JSON.parse(raw); } catch (error) {}
+  try {
+    if (env && env.v === 3) { applyNormalizedTrackerObject(await openVault(env, key)); return true; }
+    if (env && env.v === 2) { applyNormalizedTrackerObject(await openLegacyVault(env, pwd, legacySalt)); return saveTrackerWith(key); }
+  } catch (error) { return false; }
+  if (env && (env.checks || env.samples || env.theme)) { applyNormalizedTrackerObject(env); return saveTrackerWith(key); }
+  try { localStorage.setItem(STORAGE_KEY + "_unreadable", raw); } catch (error) {}
+  return saveTrackerWith(key);
+}
+
+async function upgradeLegacyOverride(pwd) {
+  const old = activeOwnerVerifier, next = await newVerifier(pwd);
+  const key = await importVaultKey(next.bits);
+  if (!(await loadVaultWithKey(key, pwd, old.salt)) || !saveOwnerOverride(next)) throw new Error("upgrade failed");
+  return { key, bits: next.bits };
+}
+
+async function saveTracker() {
+  try {
+    if (!activeVaultKey || !(await saveTrackerWith(activeVaultKey))) throw new Error("write failed");
+    storageAvailable = true;
+    updateStorageIndicators();
+    return true;
+  } catch (error) {
+    storageAvailable = false;
+    updateStorageIndicators();
+    setStatus("Could not save encrypted vault to browser storage. Export a backup to keep your changes.");
+    return false;
+  }
+}
+
+/* Sliding Glider Positioning for Top Navigation & Schedule Tabs */
+function positionGlider(containerEl, gliderEl, activeBtnEl, instant = false) {
+  if (!containerEl || !gliderEl || !activeBtnEl) return;
+  if (instant) {
+    gliderEl.style.transition = "none";
+  }
+  const left = activeBtnEl.offsetLeft;
+  const width = activeBtnEl.offsetWidth;
+  gliderEl.style.width = `${width}px`;
+  gliderEl.style.transform = `translate3d(${left}px, 0, 0)`;
+  if (instant) {
+    void gliderEl.offsetWidth;
+    gliderEl.style.transition = "";
+  }
+}
+
+function updateNavGlider(instant = false) {
+  const nav = document.getElementById("mainNavSwitch");
+  const glider = document.getElementById("navGlider");
+  const activeBtn = nav ? nav.querySelector('button[aria-selected="true"]') : null;
+  positionGlider(nav, glider, activeBtn, instant);
+}
+
+function updateTabGlider(instant = false) {
+  const tabs = document.getElementById("scheduleTabs");
+  const glider = document.getElementById("tabGlider");
+  const activeBtn = tabs ? tabs.querySelector('button[aria-selected="true"]') : null;
+  positionGlider(tabs, glider, activeBtn, instant);
+}
+
+const fmt = d => new Intl.DateTimeFormat("en-IN", {
+  day:"numeric",month:"short",year:"numeric",hour:"numeric",minute:"2-digit",
+  timeZone:"Asia/Kolkata",timeZoneName:"short"
+}).format(d);
+
+const fmtDate = d => new Intl.DateTimeFormat("en-IN", {
+  day:"numeric",month:"short",year:"numeric",timeZone:"Asia/Kolkata"
+}).format(d);
+
+function durationMs(subjectId) {
+  return (DEFAULT_DURATIONS[subjectId] || 120) * 60000;
+}
+
+function getStatus(date, subjectId, now = getEffectiveNow()) {
+  const ms = date.getTime() - now;
+  const duration = durationMs(subjectId);
+  if (ms <= 0 && ms > -duration) return { state:"live", remaining:duration + ms };
+  if (ms <= -duration) return { state:"done" };
+  const totalSeconds = Math.floor(ms / 1000);
+  return {
+    state:"upcoming",
+    days:Math.floor(totalSeconds / 86400),
+    hours:Math.floor((totalSeconds % 86400) / 3600),
+    minutes:Math.floor((totalSeconds % 3600) / 60),
+    seconds:totalSeconds % 60
+  };
+}
+
+function subjectIdFor(name) {
+  if (name === "Bengali") return "bengali";
+  const match = SYLLABUS.find(subject => subject.title.replace(/^\d+\.\s*/,"").toLowerCase() === name.toLowerCase() ||
+    (name === "History & Civics" && subject.id === "history"));
+  return match ? match.id : "eng-lang";
+}
+
+function getAllExams(now = getEffectiveNow()) {
+  return ["pre","board"].flatMap(type =>
+    schedules[type].map(([name, iso], index) => {
+      const date = new Date(iso);
+      return { name, date, type, index, status:getStatus(date, subjectIdFor(name), now) };
+    })
+  ).sort((a,b) => a.date - b.date);
+}
+
+function getStudyGapText(currDate, prevDate) {
+  if (!prevDate) return "First paper";
+  const d1 = Date.UTC(currDate.getUTCFullYear(),currDate.getUTCMonth(),currDate.getUTCDate());
+  const d0 = Date.UTC(prevDate.getUTCFullYear(),prevDate.getUTCMonth(),prevDate.getUTCDate());
+  const diffDays = Math.round((d1-d0)/86400000)-1;
+  if (diffDays <= 0) return "Back-to-back";
+  return `${diffDays}d study gap`;
+}
+
+function scrollToTimetable(targetTab) {
+  setTab(targetTab);
+  const timetableSection = document.getElementById("timetableSection");
+  if (!timetableSection) return;
+  timetableSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  timetableSection.classList.remove("is-highlighted");
+  void timetableSection.offsetWidth;
+  timetableSection.classList.add("is-highlighted");
+}
+
+function renderHero(now = getEffectiveNow()) {
+  const exams = getAllExams(now);
+  const heroExam = exams.find(x => x.status.state === "live" || x.status.state === "upcoming");
+  const heroLabel = document.getElementById("heroLabel");
+  const heroSwitch = document.getElementById("heroSwitch");
+  const heroTimer = document.getElementById("heroTimer");
+  if (heroExam) {
+    const st = heroExam.status;
+    const labelType = heroExam.type === "pre" ? "Pre-Board" : "ICSE Board";
+    if (st.state === "live") {
+      heroLabel.innerHTML = `<span class="live-dot" aria-hidden="true"></span>In Progress · ${labelType}`;
+    } else {
+      heroLabel.textContent = `Next ${labelType} examination`;
+    }
+    document.getElementById("nextName").textContent = heroExam.name;
+    document.getElementById("nextDate").textContent = fmt(heroExam.date);
+    document.getElementById("nextType").textContent = `${labelType} · 10:15 AM IST`;
+    if (st.state === "live") {
+      const left = Math.max(0,st.remaining);
+      const h = Math.floor(left/3600000), m = Math.floor((left%3600000)/60000), s = Math.floor((left%60000)/1000);
+      heroTimer.innerHTML = `<strong>In progress</strong><span>${String(h).padStart(2,"0")}h ${String(m).padStart(2,"0")}m ${String(s).padStart(2,"0")}s remaining</span>`;
+    } else {
+      heroTimer.innerHTML = `<strong>${st.days}</strong><span>days</span><strong>${String(st.hours).padStart(2,"0")}</strong><span>hours</span><strong>${String(st.minutes).padStart(2,"0")}</strong><span>min</span><strong>${String(st.seconds).padStart(2,"0")}</strong><span>sec</span>`;
+    }
+    const targetTab = heroExam.type === "pre" ? "board" : "pre";
+    const otherName = targetTab === "board" ? "ICSE Boards" : "Pre-Boards";
+    heroSwitch.hidden = false;
+    heroSwitch.textContent = `View ${otherName} schedule`;
+    heroSwitch.onclick = () => scrollToTimetable(targetTab);
+  } else {
+    heroLabel.textContent = "Schedule complete";
+    document.getElementById("nextName").textContent = "All scheduled papers are complete";
+    heroTimer.innerHTML = `<strong>—</strong><span>no upcoming examinations</span>`;
+    document.getElementById("nextDate").textContent = "";
+    document.getElementById("nextType").textContent = "";
+    heroSwitch.hidden = true;
+  }
+}
+
+function formatCardCountdown(st) {
+  if (st.state === "done") return { main: "Completed", sub: "exam window ended" };
+  if (st.state === "live") return { main: "Live now", sub: "in progress" };
+  if (st.days === 0) return { main: `${st.hours}h ${st.minutes}m`, sub: "remaining today" };
+  return { main: `${st.days}d ${st.hours}h`, sub: "remaining" };
+}
+
+function renderSchedule(forceRebuild = false) {
+  const now = getEffectiveNow();
+  renderHero(now);
+  updateSimulationBadge(now);
+
+  const items = schedules[active];
+  document.getElementById("listTitle").textContent = active === "pre" ? "Pre-Board schedule" : "ICSE Board schedule";
+
+  let markedNext = false;
+  const computed = items.map(([name, iso], idx) => {
+    const d = new Date(iso);
+    const prevDate = idx > 0 ? new Date(items[idx-1][1]) : null;
+    const gapText = getStudyGapText(d, prevDate);
+    const st = getStatus(d, subjectIdFor(name), now);
+    const isNext = !markedNext && (st.state === "upcoming" || st.state === "live");
+    if (isNext) markedNext = true;
+    return { name, d, idx, gapText, st, isNext };
+  });
+
+  const structuralSignature = `${active}|` + computed.map(c => `${c.st.state}:${c.isNext ? 1 : 0}`).join(",");
+  const grid = document.getElementById("examGrid");
+
+  if (forceRebuild || structuralSignature !== gridRenderSignature) {
+    gridRenderSignature = structuralSignature;
+    const label = active === "pre" ? "Pre-Board" : "ICSE Board";
+
+    grid.classList.remove("slide-from-right", "slide-from-left");
+    if (pendingSlideDirection) {
+      void grid.offsetWidth;
+      grid.classList.add(pendingSlideDirection === "left" ? "slide-from-right" : "slide-from-left");
+      pendingSlideDirection = null;
+    }
+
+    grid.innerHTML = computed.map(({ name, d, idx, gapText, st, isNext }) => {
+      const cardClass = st.state === "done"
+        ? "card card-enter is-done"
+        : st.state === "live"
+          ? "card card-enter is-live"
+          : isNext
+            ? "card card-enter is-next"
+            : "card card-enter";
+      const cd = formatCardCountdown(st);
+      const badgeClass = st.state === "live" ? "pill pill-live" : isNext ? "pill pill-next" : "pill";
+      const badgeText = st.state === "live" ? "Live" : isNext ? "Up Next" : label;
+      const delay = Math.min(idx * 14, 126);
+      return `<article class="${cardClass}" style="animation-delay:${delay}ms">
+        <div class="card-main">
+          <div class="badges"><span class="${badgeClass}">${badgeText}</span><span class="pill pill-gap">${gapText}</span></div>
+          <div class="subject">${name}</div>
+          <div class="date">${fmtDate(d)} · 10:15 AM IST</div>
+        </div>
+        <div class="count"><b data-count-main="${idx}">${cd.main}</b><small data-count-sub="${idx}">${cd.sub}</small></div>
+      </article>`;
+    }).join("");
+  } else {
+    computed.forEach(({ idx, st }) => {
+      const cd = formatCardCountdown(st);
+      const mainEl = grid.querySelector(`[data-count-main="${idx}"]`);
+      const subEl = grid.querySelector(`[data-count-sub="${idx}"]`);
+      if (mainEl && mainEl.textContent !== cd.main) mainEl.textContent = cd.main;
+      if (subEl && subEl.textContent !== cd.sub) subEl.textContent = cd.sub;
+    });
+  }
+}
+
+/* =========================================================
+   NON-DESTRUCTIVE CLOCK SIMULATION CONTROLS
+   ========================================================= */
+function toIstLocalInputString(ms) {
+  const istMs = ms + 5.5 * 3600000;
+  const d = new Date(istMs);
+  const pad = n => String(n).padStart(2, "0");
+  return `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}T${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}`;
+}
+
+function updateSimulationBadge(nowMs) {
+  const bar = document.getElementById("simBar");
+  const badge = document.getElementById("simStatusBadge");
+  if (!bar || !badge) return;
+  if (simOffsetMs === null) {
+    bar.classList.remove("is-simulating");
+    badge.textContent = "Real-Time Clock";
+  } else {
+    bar.classList.add("is-simulating");
+    badge.textContent = `Simulated: ${fmt(new Date(nowMs))}`;
+  }
+}
+
+function setSimulationPreset(presetValue) {
+  const chips = document.querySelectorAll("[data-sim-preset]");
+  const customInput = document.getElementById("simCustomInput");
+
+  chips.forEach(chip => {
+    chip.setAttribute("aria-pressed", String(chip.getAttribute("data-sim-preset") === presetValue));
+  });
+
+  if (presetValue === "live-clock") {
+    simOffsetMs = null;
+    if (customInput) customInput.value = "";
+  } else {
+    const targetMs = new Date(presetValue).getTime();
+    if (Number.isFinite(targetMs)) {
+      simOffsetMs = targetMs - Date.now();
+      if (customInput) customInput.value = toIstLocalInputString(targetMs);
+      if (targetMs >= new Date("2026-12-19T00:00:00+05:30").getTime() && active === "pre") {
+        setTab("board");
+      } else if (targetMs < new Date("2026-12-19T00:00:00+05:30").getTime() && active === "board") {
+        setTab("pre");
+      }
+    }
+  }
+  renderSchedule(true);
+}
+
+function setupSimulationBar() {
+  const simBar = document.getElementById("simBar");
+  const customInput = document.getElementById("simCustomInput");
+  if (!simBar) return;
+
+  simBar.addEventListener("click", e => {
+    const btn = e.target.closest("[data-sim-preset]");
+    if (!btn) return;
+    setSimulationPreset(btn.getAttribute("data-sim-preset"));
+  });
+
+  if (customInput) {
+    customInput.addEventListener("change", () => {
+      if (!customInput.value) {
+        setSimulationPreset("live-clock");
+        return;
+      }
+      const parsedMs = new Date(`${customInput.value}:00+05:30`).getTime();
+      if (Number.isFinite(parsedMs)) {
+        document.querySelectorAll("[data-sim-preset]").forEach(c => c.setAttribute("aria-pressed", "false"));
+        simOffsetMs = parsedMs - Date.now();
+        renderSchedule(true);
+      }
+    });
+  }
+}
+
+function totalSamples() {
+  return SYLLABUS.reduce((sum,subj) => sum + Math.max(0,Number(trackerState.samples[subj.id]) || 0),0);
+}
+
+function renderJumpBar() {
+  const jumpBar = document.getElementById("subjectJumpBar");
+  if (!jumpBar) return;
+  jumpBar.innerHTML = SYLLABUS.map(subj =>
+    `<button type="button" class="jump-pill" data-jump="${subj.id}">${escapeHtml(subj.shortTitle)}</button>`
+  ).join("");
+}
+
+function renderTracker() {
+  const query = searchQuery.trim().toLowerCase();
+  const clearBtn = document.getElementById("clearSearchBtn");
+  if (clearBtn) clearBtn.hidden = query.length === 0;
+
+  const container = document.getElementById("trackerContainer");
+  const blocksHtml = SYLLABUS.map(subj => {
+    const subjectMatches = query.length > 0 && subj.title.toLowerCase().includes(query);
+    const sampleCount = Math.max(0,Number(trackerState.samples[subj.id]) || 0);
+    const headCols = subj.columns.map(c => `<th scope="col" class="col-check">${c}</th>`).join("");
+
+    let chapterIndex = 0;
+    const indexedRows = subj.rows.map(row => {
+      if (typeof row === "object" && row.group) return { type: "group", label: row.group };
+      const rIdx = chapterIndex++;
+      return { type: "chapter", label: row, rIdx };
+    });
+
+    const filteredRows = [];
+    let pendingGroup = null;
+    let matchedChapterCount = 0;
+
+    for (const item of indexedRows) {
+      if (item.type === "group") {
+        pendingGroup = item;
+        continue;
+      }
+      const chapterMatches = !query || subjectMatches || item.label.toLowerCase().includes(query);
+      if (chapterMatches) {
+        if (pendingGroup) {
+          filteredRows.push(pendingGroup);
+          pendingGroup = null;
+        }
+        filteredRows.push(item);
+        matchedChapterCount++;
+      }
+    }
+
+    if (query && !subjectMatches && matchedChapterCount === 0) return "";
+
+    const bodyRows = filteredRows.map(item => {
+      if (item.type === "group") {
+        return `<tr class="group-row"><td colspan="${subj.columns.length+1}">${escapeHtml(item.label)}</td></tr>`;
+      }
+      const checkCells = subj.columns.map((col,cIdx) => {
+        const key = `${subj.id}:${item.rIdx}:${cIdx}`;
+        const checked = trackerState.checks[key] ? "checked" : "";
+        return `<td class="col-check"><input type="checkbox" data-check="${key}" aria-label="${escapeAttr(item.label)} — ${escapeAttr(col)}" ${checked}></td>`;
+      }).join("");
+      return `<tr><td>${escapeHtml(item.label)}</td>${checkCells}</tr>`;
+    }).join("");
+
+    return `<article class="subject-block" id="subj-block-${subj.id}">
+      <div class="subject-head"><h3>${subj.title}</h3>
+        <div class="sample-box"><span>${subj.sampleLabel}:</span>
+          <button type="button" class="sample-btn" data-sample="${subj.id}" data-delta="-1" aria-label="Decrease ${escapeAttr(subj.title)} sample paper count" ${sampleCount===0?"disabled":""}>−</button>
+          <span class="sample-val" id="sample-${subj.id}" aria-live="polite">${sampleCount}</span>
+          <button type="button" class="sample-btn" data-sample="${subj.id}" data-delta="1" aria-label="Increase ${escapeAttr(subj.title)} sample paper count">+</button>
+        </div>
+      </div>
+      <div class="table-wrap"><table class="raw-table">
+        <thead><tr><th scope="col">${subj.chapterLabel}</th>${headCols}</tr></thead>
+        <tbody>${bodyRows}</tbody>
+      </table></div>
+    </article>`;
+  }).filter(Boolean).join("");
+
+  container.innerHTML = blocksHtml || `<div class="empty-search">No subjects or chapters matched “<strong>${escapeHtml(searchQuery.trim())}</strong>”.</div>`;
+  document.getElementById("overallSamples").textContent = String(totalSamples());
+  updateStorageIndicators();
+}
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g,ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+}
+function escapeAttr(value) { return escapeHtml(value); }
+
+function setTab(which, focusTab = false, slideDirection = null) {
+  if (active !== which) {
+    pendingSlideDirection = slideDirection || (which === "board" ? "left" : "right");
+  }
+  active = which;
+  const preTab = document.getElementById("preTab");
+  const boardTab = document.getElementById("boardTab");
+  const grid = document.getElementById("examGrid");
+  preTab.setAttribute("aria-selected",String(which==="pre"));
+  boardTab.setAttribute("aria-selected",String(which==="board"));
+  preTab.tabIndex = which==="pre" ? 0 : -1;
+  boardTab.tabIndex = which==="board" ? 0 : -1;
+  grid.setAttribute("aria-labelledby",which==="pre" ? "preTab" : "boardTab");
+  updateTabGlider(false);
+  if (focusTab) (which==="pre" ? preTab : boardTab).focus();
+  renderSchedule(true);
+}
+
+/* Swipe & Drag Navigation for Pre-Boards / ICSE Boards Timetable Section */
+function setupTimetableSwipe() {
+  const timetableSection = document.getElementById("timetableSection");
+  const examGrid = document.getElementById("examGrid");
+  if (!timetableSection || !examGrid) return;
+
+  const SWIPE_THRESHOLD = 46;
+  const HORIZONTAL_DOMINANCE_RATIO = 1.35;
+
+  let startX = 0;
+  let startY = 0;
+  let isPointerDown = false;
+  let swipeLocked = false;
+  let verticalScrollLocked = false;
+  let activePointerId = null;
+
+  function resetGridTransform() {
+    examGrid.classList.remove("is-dragging");
+    examGrid.style.transform = "";
+    examGrid.style.opacity = "";
+  }
+
+  function applyRubberBandDrag(dx) {
+    const canSwitchLeft = active === "pre" && dx < 0;
+    const canSwitchRight = active === "board" && dx > 0;
+    const isValidDirection = canSwitchLeft || canSwitchRight;
+
+    const dampedX = isValidDirection
+      ? Math.max(-96, Math.min(96, dx * 0.42))
+      : Math.max(-28, Math.min(28, dx * 0.14));
+
+    const fade = isValidDirection
+      ? Math.max(0.72, 1 - Math.abs(dx) / 420)
+      : 1;
+
+    examGrid.style.transform = `translate3d(${dampedX}px, 0, 0)`;
+    examGrid.style.opacity = String(fade);
+  }
+
+  function finishGesture(dx, dy) {
+    resetGridTransform();
+    if (verticalScrollLocked) return;
+
+    const absX = Math.abs(dx);
+    const absY = Math.abs(dy);
+
+    if (absX >= SWIPE_THRESHOLD && absX > absY * HORIZONTAL_DOMINANCE_RATIO) {
+      if (dx < 0 && active === "pre") {
+        setTab("board", false, "left");
+      } else if (dx > 0 && active === "board") {
+        setTab("pre", false, "right");
+      }
+    }
+  }
+
+  timetableSection.addEventListener("pointerdown", e => {
+    if (document.body.classList.contains("is-locked")) return;
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    if (e.target.closest(".tabs")) return;
+
+    isPointerDown = true;
+    swipeLocked = false;
+    verticalScrollLocked = false;
+    activePointerId = e.pointerId;
+    startX = e.clientX;
+    startY = e.clientY;
+  }, { passive: true });
+
+  timetableSection.addEventListener("pointermove", e => {
+    if (!isPointerDown || e.pointerId !== activePointerId) return;
+
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+    const absX = Math.abs(dx);
+    const absY = Math.abs(dy);
+
+    if (!swipeLocked && !verticalScrollLocked) {
+      if (absX < 10 && absY < 10) return;
+      if (absX > absY * HORIZONTAL_DOMINANCE_RATIO) {
+        swipeLocked = true;
+        examGrid.classList.add("is-dragging");
+      } else {
+        verticalScrollLocked = true;
+        return;
+      }
+    }
+
+    if (swipeLocked) {
+      applyRubberBandDrag(dx);
+    }
+  }, { passive: true });
+
+  function handlePointerEnd(e) {
+    if (!isPointerDown || e.pointerId !== activePointerId) return;
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+    isPointerDown = false;
+    activePointerId = null;
+    finishGesture(dx, dy);
+  }
+
+  timetableSection.addEventListener("pointerup", handlePointerEnd, { passive: true });
+  timetableSection.addEventListener("pointercancel", () => {
+    if (!isPointerDown) return;
+    isPointerDown = false;
+    activePointerId = null;
+    resetGridTransform();
+  }, { passive: true });
+}
+
+/* Full-Viewport Horizontal Swipe Navigation Across Dashboard -> Tracker -> Settings */
+function setupGlobalViewSwipe() {
+  const viewStage = document.getElementById("viewStage");
+  if (!viewStage) return;
+
+  const SWIPE_THRESHOLD = 58;
+  const HORIZONTAL_DOMINANCE_RATIO = 1.45;
+
+  let startX = 0;
+  let startY = 0;
+  let isTracking = false;
+  let horizontalLocked = false;
+  let verticalLocked = false;
+  let activePointerId = null;
+
+  function resetStage() {
+    viewStage.classList.remove("is-swiping");
+    viewStage.style.transform = "";
+    viewStage.style.opacity = "";
+  }
+
+  document.addEventListener("pointerdown", e => {
+    if (document.body.classList.contains("is-locked")) return;
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    if (
+      e.target.closest(".timetable-section") ||
+      e.target.closest(".table-wrap") ||
+      e.target.closest(".subject-jump-bar") ||
+      e.target.closest(".nav-switch") ||
+      e.target.closest(".sim-bar") ||
+      e.target.closest("input, button, label")
+    ) {
+      return;
+    }
+
+    isTracking = true;
+    horizontalLocked = false;
+    verticalLocked = false;
+    activePointerId = e.pointerId;
+    startX = e.clientX;
+    startY = e.clientY;
+  }, { passive: true });
+
+  document.addEventListener("pointermove", e => {
+    if (!isTracking || e.pointerId !== activePointerId) return;
+
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+    const absX = Math.abs(dx);
+    const absY = Math.abs(dy);
+
+    if (!horizontalLocked && !verticalLocked) {
+      if (absX < 12 && absY < 12) return;
+      if (absX > absY * HORIZONTAL_DOMINANCE_RATIO) {
+        horizontalLocked = true;
+        viewStage.classList.add("is-swiping");
+      } else {
+        verticalLocked = true;
+        return;
+      }
+    }
+
+    if (horizontalLocked) {
+      const idx = VIEW_ORDER.indexOf(currentView);
+      const canGoNext = dx < 0 && idx < VIEW_ORDER.length - 1;
+      const canGoPrev = dx > 0 && idx > 0;
+      const valid = canGoNext || canGoPrev;
+
+      const dampedX = valid
+        ? Math.max(-105, Math.min(105, dx * 0.36))
+        : Math.max(-26, Math.min(26, dx * 0.12));
+      const fade = valid ? Math.max(0.76, 1 - Math.abs(dx) / 480) : 1;
+
+      viewStage.style.transform = `translate3d(${dampedX}px, 0, 0)`;
+      viewStage.style.opacity = String(fade);
+    }
+  }, { passive: true });
+
+  function finishGlobalSwipe(e) {
+    if (!isTracking || e.pointerId !== activePointerId) return;
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+    isTracking = false;
+    activePointerId = null;
+    resetStage();
+
+    if (verticalLocked) return;
+    const absX = Math.abs(dx);
+    const absY = Math.abs(dy);
+
+    if (absX >= SWIPE_THRESHOLD && absX > absY * HORIZONTAL_DOMINANCE_RATIO) {
+      const idx = VIEW_ORDER.indexOf(currentView);
+      if (dx < 0 && idx < VIEW_ORDER.length - 1) {
+        setWindow(VIEW_ORDER[idx + 1]);
+      } else if (dx > 0 && idx > 0) {
+        setWindow(VIEW_ORDER[idx - 1]);
+      }
+    }
+  }
+
+  document.addEventListener("pointerup", finishGlobalSwipe, { passive: true });
+  document.addEventListener("pointercancel", () => {
+    if (!isTracking) return;
+    isTracking = false;
+    activePointerId = null;
+    resetStage();
+  }, { passive: true });
+}
+
+function applyTheme() {
+  const isDark = trackerState.theme === "dark";
+  document.documentElement.dataset.theme = isDark ? "dark" : "light";
+  document.getElementById("darkModeToggle").checked = isDark;
+  document.getElementById("lightThemeCard").setAttribute("aria-pressed", String(!isDark));
+  document.getElementById("darkThemeCard").setAttribute("aria-pressed", String(isDark));
+  document.querySelector('meta[name="theme-color"]').content = isDark ? "#0d0e1a" : "#eaedf6";
+}
+
+function triggerViewEntrance(element, direction = "none") {
+  if (!element) return;
+  element.classList.remove("view-animate", "view-slide-right", "view-slide-left");
+  void element.offsetWidth;
+  if (direction === "forward") {
+    element.classList.add("view-slide-right");
+  } else if (direction === "backward") {
+    element.classList.add("view-slide-left");
+  } else {
+    element.classList.add("view-animate");
+  }
+}
+
+function setWindow(view, options = {}) {
+  const normalizedView = VIEW_ORDER.includes(view) ? view : "schedule";
+  const prevIndex = VIEW_ORDER.indexOf(currentView);
+  const nextIndex = VIEW_ORDER.indexOf(normalizedView);
+
+  let direction = "none";
+  if (!options.instant && prevIndex !== -1 && nextIndex !== -1 && prevIndex !== nextIndex) {
+    direction = nextIndex > prevIndex ? "forward" : "backward";
+  }
+
+  currentView = normalizedView;
+  const isTracker = normalizedView === "tracker";
+  const isSettings = normalizedView === "settings";
+  const scheduleWin = document.getElementById("scheduleWindow");
+  const trackerWin = document.getElementById("trackerWindow");
+  const settingsWin = document.getElementById("settingsWindow");
+
+  scheduleWin.hidden = isTracker || isSettings;
+  trackerWin.hidden = !isTracker;
+  settingsWin.hidden = !isSettings;
+
+  document.getElementById("viewScheduleBtn").setAttribute("aria-selected",String(!isTracker && !isSettings));
+  document.getElementById("viewTrackerBtn").setAttribute("aria-selected",String(isTracker));
+  document.getElementById("viewSettingsBtn").setAttribute("aria-selected",String(isSettings));
+
+  updateNavGlider(Boolean(options.instant));
+
+  if (!options.skipHash) {
+    const targetHash = normalizedView === "schedule" ? "#dashboard" : `#${normalizedView}`;
+    if (window.location.hash !== targetHash) {
+      history.replaceState(null, "", targetHash);
+    }
+  }
+
+  if (isTracker) {
+    renderTracker();
+    triggerViewEntrance(trackerWin, direction);
+  } else if (isSettings) {
+    updateStorageIndicators();
+    updateSecurityUI();
+    triggerViewEntrance(settingsWin, direction);
+  } else {
+    renderSchedule(true);
+    updateTabGlider(true);
+    triggerViewEntrance(scheduleWin, direction);
+  }
+  updateBackToTopVisibility();
+}
+
+function exportProgress() {
+  const payload = {
+    app:"বিজয়",
+    backupVersion:BACKUP_VERSION,
+    exportedAt:new Date().toISOString(),
+    trackerState
+  };
+  try {
+    const blob = new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `bijoy-progress-${new Date().toISOString().slice(0,10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    setStatus("Progress backup exported successfully.");
+  } catch (error) {
+    setStatus("Export failed in this browser.");
+  }
+}
+
+function validateImportedState(data) {
+  const state = data && data.trackerState ? data.trackerState : data;
+  if (!state || typeof state !== "object" || Array.isArray(state)) throw new Error("Invalid backup structure.");
+  const checks = state.checks && typeof state.checks === "object" && !Array.isArray(state.checks) ? state.checks : {};
+  const samples = state.samples && typeof state.samples === "object" && !Array.isArray(state.samples) ? state.samples : {};
+  const validChecks = {};
+  for (const [key,value] of Object.entries(checks)) {
+    if (/^[a-z-]+:\d+:\d+$/.test(key) && value === true) validChecks[key] = true;
+  }
+  const validSamples = {};
+  for (const subj of SYLLABUS) {
+    const n = Number(samples[subj.id] || 0);
+    validSamples[subj.id] = Number.isFinite(n) ? Math.max(0,Math.min(100000,Math.floor(n))) : 0;
+  }
+
+  return {
+    checks: validChecks,
+    samples: validSamples,
+    theme: state.theme === "dark" ? "dark" : "light"
+  };
+}
+
+async function importProgress(file) {
+  if (!file) return;
+  try {
+    const text = await file.text();
+    const parsed = JSON.parse(text);
+    trackerState = validateImportedState(parsed);
+    await saveTracker();
+    applyTheme();
+    renderTracker();
+    renderSchedule(true);
+    setStatus("Backup imported and encrypted in your local vault.");
+  } catch (error) {
+    setStatus(`Import failed: ${error.message || "invalid file"}`);
+  } finally {
+    document.getElementById("importFile").value = "";
+  }
+}
+
+let resetConfirmPending = false;
+let resetConfirmTimer = null;
+
+async function resetProgress() {
+  const btn = document.getElementById("resetBtn");
+  if (!resetConfirmPending) {
+    resetConfirmPending = true;
+    btn.textContent = "Click again to confirm reset";
+    setStatus("Warning: Click 'Click again to confirm reset' within 5 seconds to clear all syllabus checkboxes and sample counts.");
+    clearTimeout(resetConfirmTimer);
+    resetConfirmTimer = setTimeout(() => {
+      resetConfirmPending = false;
+      btn.textContent = "Reset progress";
+    }, 5000);
+    return;
+  }
+  clearTimeout(resetConfirmTimer);
+  resetConfirmPending = false;
+  btn.textContent = "Reset progress";
+  trackerState.checks = {};
+  trackerState.samples = {};
+  await saveTracker();
+  renderTracker();
+  renderSchedule(true);
+  setStatus("Syllabus and sample-paper progress has been reset.");
+}
+
+function updateBackToTopVisibility() {
+  const btn = document.getElementById("backTopBtn");
+  if (!btn) return;
+  btn.hidden = window.scrollY < 420 || document.body.classList.contains("is-locked");
+}
+
+/* =========================================================
+   SINGLE-OWNER LOCK SCREEN & SETTINGS SECURITY HANDLERS
+   ========================================================= */
+// Eye show/hide toggle for all password fields
+document.addEventListener("click", e => {
+  const toggleBtn = e.target.closest("[data-toggle-pwd]");
+  if (!toggleBtn) return;
+  const inputId = toggleBtn.getAttribute("data-toggle-pwd");
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  const isHidden = input.type === "password";
+  input.type = isHidden ? "text" : "password";
+  toggleBtn.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
+  toggleBtn.innerHTML = isHidden
+    ? `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/></svg>`
+    : `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>`;
+});
+
+// Single-Owner Unlock Form Submit with Brute-Force Cooldown
+document.getElementById("unlockPasswordForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const lockState = getLockoutState();
+  if (lockState.lockedUntil > Date.now()) { updateLockoutCooldownUI(); return; }
+
+  const pwd = document.getElementById("unlockPwdInput").value;
+  const errorEl = document.getElementById("unlockError");
+  const authCard = document.getElementById("authCard");
+  const submitBtn = document.getElementById("unlockSubmitBtn");
+
+  if (!pwd) {
+    errorEl.textContent = "Please enter the owner password.";
+    triggerCardShake(authCard);
+    document.getElementById("unlockPwdInput").focus();
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Verifying…";
+
+  try {
+    const verdict = await checkPassword(pwd, activeOwnerVerifier);
+    if (verdict.ok) {
+      let bits, key;
+      try {
+        if (activeOwnerVerifier.legacy) {
+          ({ bits, key } = await upgradeLegacyOverride(pwd));
+        } else {
+          bits = verdict.vaultBits;
+          key = await importVaultKey(bits);
+          if (!(await loadVaultWithKey(key, pwd))) throw new Error("vault");
+        }
+      } catch (error) {
+        errorEl.textContent = "Vault decryption failed. Verify your credential or browser storage.";
+        triggerCardShake(authCard);
+        return;
+      }
+      activeVaultKey = key;
+      persistSession(bits);
+      bits.fill(0);
+      clearLockoutState();
+      errorEl.textContent = "";
+      document.getElementById("unlockPwdInput").value = "";
+      applyTheme();
+      renderTracker();
+      renderSchedule(true);
+      unlockDashboard();
+    } else {
+      const nextAttempts = lockState.attempts + 1;
+      if (nextAttempts >= MAX_FAILED_ATTEMPTS) {
+        saveLockoutState(nextAttempts, Date.now() + LOCKOUT_DURATION_MS);
+        document.getElementById("unlockPwdInput").value = "";
+        triggerCardShake(authCard);
+        updateLockoutCooldownUI();
+      } else {
+        saveLockoutState(nextAttempts, 0);
+        const remainingTries = MAX_FAILED_ATTEMPTS - nextAttempts;
+        errorEl.textContent = `Access denied. Incorrect owner password (${remainingTries} ${remainingTries === 1 ? "attempt" : "attempts"} remaining before 30s lockout).`;
+        triggerCardShake(authCard);
+        document.getElementById("unlockPwdInput").select();
+      }
+    }
+  } finally {
+    if (getLockoutState().lockedUntil <= Date.now()) submitBtn.disabled = false;
+    submitBtn.textContent = "Unlock Dashboard";
+  }
+});
+
+// Header & Settings Quick-Lock Buttons
+document.getElementById("headerLockBtn").addEventListener("click", lockDashboard);
+document.getElementById("settingsLockNowBtn").addEventListener("click", lockDashboard);
+
+// Settings: Change Owner Password (re-keys the vault, shows new source constants)
+document.getElementById("changePasswordForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const currentPwd = document.getElementById("currentPwdInput").value;
+  const newPwd = document.getElementById("newPwdInput").value;
+  const confirmNewPwd = document.getElementById("confirmNewPwdInput").value;
+  const verifierBox = document.getElementById("generatedVerifierBox");
+
+  if (!currentPwd) { setSecurityStatus("Enter your current owner password to verify identity.", true); return; }
+  if (!(await checkPassword(currentPwd, activeOwnerVerifier)).ok) { setSecurityStatus("Current owner password is incorrect.", true); return; }
+  if (newPwd.length < 4) { setSecurityStatus("New owner password must be at least 4 characters long.", true); return; }
+  if (newPwd !== confirmNewPwd) { setSecurityStatus("New password and confirmation do not match.", true); return; }
+
+  const next = await newVerifier(newPwd);
+  const newKey = await importVaultKey(next.bits);
+  if (!(await saveTrackerWith(newKey)) || !saveOwnerOverride(next)) {
+    await saveTrackerWith(activeVaultKey);
+    setSecurityStatus("Could not save the new password in this browser. Nothing was changed.", true);
+    return;
+  }
+  activeVaultKey = newKey;
+  persistSession(next.bits);
+
+  document.getElementById("currentPwdInput").value = "";
+  document.getElementById("newPwdInput").value = "";
+  document.getElementById("confirmNewPwdInput").value = "";
+  updateSecurityUI();
+  if (verifierBox) {
+    verifierBox.innerHTML = `<strong>Optional permanent HTML source constants:</strong><br>const BUILTIN_OWNER_ITERATIONS = ${next.iter};<br>const BUILTIN_OWNER_SALT = "${next.salt}";<br>const BUILTIN_OWNER_HASH = "${next.hash}";`;
+  }
+  setSecurityStatus("Owner password updated and local vault re-encrypted with AES-GCM.");
+});
+
+// Settings: Revert to the built-in HTML password (needs both passwords to re-key the vault)
+document.getElementById("restoreDefaultOwnerBtn").addEventListener("click", async () => {
+  const curEl = document.getElementById("restoreDefaultPwdInput");
+  const bltEl = document.getElementById("restoreBuiltinPwdInput");
+  if (!curEl.value || !bltEl.value) { setSecurityStatus("Enter your current owner password and the built-in password.", true); return; }
+  const builtin = { salt: BUILTIN_OWNER_SALT, hash: BUILTIN_OWNER_HASH, iter: BUILTIN_OWNER_ITERATIONS };
+  const [cur, blt] = await Promise.all([checkPassword(curEl.value, activeOwnerVerifier), checkPassword(bltEl.value, builtin)]);
+  if (!cur.ok) { setSecurityStatus("Current owner password is incorrect.", true); return; }
+  if (!blt.ok) { setSecurityStatus("Built-in password is incorrect.", true); return; }
+
+  const key = await importVaultKey(blt.vaultBits);
+  if (!(await saveTrackerWith(key))) {
+    await saveTrackerWith(activeVaultKey);
+    setSecurityStatus("Could not re-encrypt the vault. Nothing was changed.", true);
+    return;
+  }
+  clearOwnerOverride();
+  activeVaultKey = key;
+  persistSession(blt.vaultBits);
+  curEl.value = "";
+  bltEl.value = "";
+  document.getElementById("generatedVerifierBox").innerHTML = "";
+  updateSecurityUI();
+  setSecurityStatus("Reverted to the built-in owner password and re-encrypted your vault.");
+});
+
+/* =========================================================
+   STANDARD NAVIGATION & INTERACTION EVENT LISTENERS
+   ========================================================= */
+document.getElementById("viewScheduleBtn").addEventListener("click",()=>setWindow("schedule"));
+document.getElementById("viewTrackerBtn").addEventListener("click",()=>setWindow("tracker"));
+document.getElementById("viewSettingsBtn").addEventListener("click",()=>setWindow("settings"));
+document.getElementById("preTab").addEventListener("click",()=>setTab("pre"));
+document.getElementById("boardTab").addEventListener("click",()=>setTab("board"));
+
+document.querySelector(".tabs").addEventListener("keydown",e=>{
+  if(e.key==="ArrowRight"||e.key==="ArrowLeft"){e.preventDefault();setTab(active==="pre"?"board":"pre",true);}
+});
+
+document.querySelector(".nav-switch").addEventListener("keydown",e=>{
+  if(e.key==="ArrowRight"||e.key==="ArrowLeft"){
+    e.preventDefault();
+    const ids = ["viewScheduleBtn","viewTrackerBtn","viewSettingsBtn"];
+    const index = ids.indexOf(e.target.id);
+    const nextIndex = (index + (e.key==="ArrowRight" ? 1 : ids.length-1)) % ids.length;
+    document.getElementById(ids[nextIndex]).focus();
+    document.getElementById(ids[nextIndex]).click();
+  }
+});
+
+/* Keyboard shortcuts: Alt+1/2/3 for views, "/" for search in Tracker */
+document.addEventListener("keydown", e => {
+  if (document.body.classList.contains("is-locked")) return;
+  if (e.altKey && !e.ctrlKey && !e.metaKey) {
+    if (e.key === "1") { e.preventDefault(); setWindow("schedule"); }
+    else if (e.key === "2") { e.preventDefault(); setWindow("tracker"); }
+    else if (e.key === "3") { e.preventDefault(); setWindow("settings"); }
+    else if (e.key.toLowerCase() === "l") { e.preventDefault(); lockDashboard(); }
+  } else if (e.key === "/" && currentView === "tracker" && !e.target.closest("input, textarea")) {
+    e.preventDefault();
+    document.getElementById("syllabusSearch").focus();
+  }
+});
+
+const syllabusSearchEl = document.getElementById("syllabusSearch");
+syllabusSearchEl.addEventListener("input",e=>{
+  searchQuery = e.target.value;
+  renderTracker();
+});
+document.getElementById("clearSearchBtn").addEventListener("click",()=>{
+  searchQuery = "";
+  syllabusSearchEl.value = "";
+  renderTracker();
+  syllabusSearchEl.focus();
+});
+
+document.getElementById("subjectJumpBar").addEventListener("click", e => {
+  const pill = e.target.closest("[data-jump]");
+  if (!pill) return;
+  const subjId = pill.getAttribute("data-jump");
+  if (searchQuery) {
+    searchQuery = "";
+    syllabusSearchEl.value = "";
+    renderTracker();
+  }
+  const block = document.getElementById(`subj-block-${subjId}`);
+  if (!block) return;
+  block.scrollIntoView({ behavior: "smooth", block: "start" });
+  block.classList.remove("is-highlighted");
+  void block.offsetWidth;
+  block.classList.add("is-highlighted");
+});
+
+document.getElementById("trackerContainer").addEventListener("change",e=>{
+  const box=e.target.closest("[data-check]");
+  if(!box)return;
+  const key=box.getAttribute("data-check");
+  if(box.checked)trackerState.checks[key]=true;
+  else delete trackerState.checks[key];
+  saveTracker();
+});
+
+document.getElementById("trackerContainer").addEventListener("click",e=>{
+  const btn=e.target.closest("[data-sample]");
+  if(!btn)return;
+  const subjId=btn.getAttribute("data-sample");
+  const delta=Number(btn.getAttribute("data-delta"));
+  trackerState.samples[subjId]=Math.max(0,(Number(trackerState.samples[subjId])||0)+delta);
+  saveTracker();
+  renderTracker();
+});
+
+document.getElementById("darkModeToggle").addEventListener("change",e=>{
+  trackerState.theme = e.target.checked ? "dark" : "light";
+  applyTheme();
+  saveTracker();
+});
+
+document.getElementById("lightThemeCard").addEventListener("click",()=>{
+  trackerState.theme = "light";
+  applyTheme();
+  saveTracker();
+});
+
+document.getElementById("darkThemeCard").addEventListener("click",()=>{
+  trackerState.theme = "dark";
+  applyTheme();
+  saveTracker();
+});
+
+document.getElementById("exportBtn").addEventListener("click",exportProgress);
+document.getElementById("importBtn").addEventListener("click",()=>document.getElementById("importFile").click());
+document.getElementById("importFile").addEventListener("change",e=>importProgress(e.target.files[0]));
+document.getElementById("resetBtn").addEventListener("click",resetProgress);
+
+document.getElementById("backTopBtn").addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+window.addEventListener("scroll", updateBackToTopVisibility, { passive: true });
+window.addEventListener("resize", () => {
+  updateNavGlider(true);
+  updateTabGlider(true);
+}, { passive: true });
+window.addEventListener("hashchange", () => {
+  const hash = window.location.hash.replace("#", "").toLowerCase();
+  if (hash === "tracker") setWindow("tracker", { skipHash: true });
+  else if (hash === "settings") setWindow("settings", { skipHash: true });
+  else if (hash === "dashboard") setWindow("schedule", { skipHash: true });
+});
+
+
+/* Initial Boot Sequence */
+(async function initApp() {
+  loadOwnerVerifier();
+  renderJumpBar();
+  setupSimulationBar();
+  setupTimetableSwipe();
+  setupGlobalViewSwipe();
+
+  const initialHash = window.location.hash.replace("#", "").toLowerCase();
+  const initialView = initialHash === "tracker" ? "tracker" : initialHash === "settings" ? "settings" : "schedule";
+
+  // A stored session key only counts if it authenticates the existing encrypted vault
+  const session = await restoreSession();
+  if (session) {
+    activeVaultKey = session.key;
+    applyNormalizedTrackerObject(session.data);
+    applyTheme();
+    setWindow(initialView, { instant: true, skipHash: true });
+    unlockDashboard();
+  } else {
+    clearSessionKey();
+    applyTheme();
+    setWindow(initialView, { instant: true, skipHash: true });
+    lockDashboard();
+  }
+
+  requestAnimationFrame(() => {
+    updateNavGlider(true);
+    updateTabGlider(true);
+  });
+
+  setInterval(() => renderSchedule(false), 1000);
+})();
+</script>
+</body>
+</html>
